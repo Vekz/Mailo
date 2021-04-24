@@ -1,0 +1,11 @@
+<resources>
+    <string name="invalid_username">Invalid username!</string>
+    <string name="invalid_password">Password cannot be empty!</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_short">Login</string>
+    <string name="prompt_email">Address email</string>
+    <string name="action_sign_in">Login</string>
+    <string name="welcome">"Welcome "</string>
+    <string name="login_failed">Wrong credentials</string>
+    <string name="title_activity_authenticator">Login</string>
+</resources>

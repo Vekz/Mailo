@@ -1,0 +1,33 @@
+
+M
+java:S1128	"0Remove this unused import 'java.io.InputStream'.(¹»º8Ìï´—/
+^
+java:S1128"<Remove this unused import 'ap.mailo.util.UserDomainHandler'.(ìêáÖÿÿÿÿÿ8Ìï´—/
+\
+java:S1128"?Remove this unused import 'javax.xml.parsers.SAXParserFactory'.(‡Ó¿ï8Ìï´—/
+Y
+java:S1128"7Remove this unused import 'ap.mailo.util.DomainParser'.(ô¶ıÿÿÿÿ8Ìï´—/
+N
+java:S1128"1Remove this unused import 'jakarta.mail.Session'.(ï¶ÔÈ8ƒé¶—/
+{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(æ©›øıÿÿÿÿ8×ê±Œ/
+Z
+java:S1128"8Remove this unused import 'javax.xml.parsers.SAXParser'.(á©ÎËøÿÿÿÿ8Ìï´—/
+v	java:S115 "ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(õÆÆè8×ê±Œ/
+^
+java:S1128"ARemove this unused import 'jakarta.mail.NoSuchProviderException'.(¶¯Ø§8Ä£á/
+{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(Éá–Âùÿÿÿÿ8×ê±Œ/
+{	java:S115$"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(Ñ©„İÿÿÿÿÿ8×ê±Œ/
+]
+java:S1128"@Remove this unused import 'jakarta.mail.PasswordAuthentication'.(õ»‘í8ƒé¶—/
+^
+java:S1128"<Remove this unused import 'jakarta.mail.MessagingException'.(´öáùıÿÿÿÿ8Ó’¹—/
+{	java:S115""ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(¹ÒÆúùÿÿÿÿ8×ê±Œ/
+v	java:S115#"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(¦–¿š8×ê±Œ/
+v	java:S115!"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(„¤³ƒ8×ê±Œ/
+{	java:S115%"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(’‡úœşÿÿÿÿ8×ê±Œ/
+K
+java:S1128
+")Remove this unused import 'java.net.URL'.(ñìÁ„üÿÿÿÿ8Ìï´—/
+P
+java:S1128"3Remove this unused import 'jakarta.mail.Transport'.(ÊÒ£–8ƒé¶—/
+b	java:S107i"AConstructor has 9 parameters, which is greater than 7 authorized.(æ·¹Æùÿÿÿÿ8ö¶º—/

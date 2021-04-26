@@ -10,13 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import ap.mailo.R;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
-
-import ap.mailo.R;
-import ap.mailo.auth.LoggedInUser;
-import ap.mailo.auth.Login;
 
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 
@@ -66,8 +63,6 @@ public class AuthenticatorIMAP extends AbstractAccountAuthenticator {
 
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
-        final AccountManager am = AccountManager.get(mContext);
-
         LoggedInUser user = new LoggedInUser(account, mContext);
 
         try {

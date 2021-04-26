@@ -6,20 +6,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import ap.mailo.util.DomainParser;
-import ap.mailo.util.UserDomainHandler;
-import jakarta.mail.MessagingException;
-import jakarta.mail.NoSuchProviderException;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
@@ -36,15 +23,15 @@ public class LoggedInUser implements Parcelable {
     public static final String ACCOUNT_shortDisplayName = "shortDisplayName";
     public static final String ACCOUNT_messageAmount = "messageAmount";
 
-    private String mail;
-    private String password;
-    private String hostSMTP;
-    private String portSMTP;
-    private String hostIMAP;
-    private String portIMAP;
-    private String socketTypeSMTP;
-    private String socketTypeIMAP;
-    private String shortDisplayName;
+    private final String mail;
+    private final String password;
+    private final String hostSMTP;
+    private final String portSMTP;
+    private final String hostIMAP;
+    private final String portIMAP;
+    private final String socketTypeSMTP;
+    private final String socketTypeIMAP;
+    private final String shortDisplayName;
 
     public String getMail() {
         return mail;

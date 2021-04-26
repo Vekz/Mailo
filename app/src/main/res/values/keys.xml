@@ -6,7 +6,7 @@
 
     <string name="ACCOUNT_TYPE" translatable="false">ap.mailo</string>
 
-    <string name="pref_sync_time" translatable="false">sync_time</string>
+    <string name="pref_syncTime" translatable="false">syncTime</string>
 
     <string name="defaultFolder" translatable="false">INBOX</string>
 </resources>

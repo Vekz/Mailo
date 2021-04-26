@@ -34,7 +34,6 @@ public class LoginViewModel extends ViewModel {
 
     public static final String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
     public static final String ARG_AUTH_TYPE = "AUTH_TYPE";
-    public static final String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACC";
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
@@ -61,7 +60,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     private boolean isPasswordValid(String password) {
-        return password != null;
+        return password != null && !password.isEmpty();
     }
 
     public void login(String mail, String password, Context context){
@@ -78,6 +77,11 @@ public class LoginViewModel extends ViewModel {
 
                     // Setup SAX Parser and our XML handler
                     SAXParserFactory factory = SAXParserFactory.newInstance();
+
+                    // Protect from XXE attacks
+                    factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+
                     SAXParser saxParser = factory.newSAXParser();
                     UserDomainHandler handler = new UserDomainHandler(mail, password, domain);
 
@@ -126,8 +130,8 @@ public class LoginViewModel extends ViewModel {
         ContentResolver.setSyncAutomatically(account, context.getString(R.string.ACCOUNT_TYPE), true);
 
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int sync_time = mSharedPreferences.getInt(context.getString(R.string.pref_sync_time), 900);
-        ContentResolver.addPeriodicSync(account, context.getString(R.string.ACCOUNT_TYPE), Bundle.EMPTY, sync_time);
+        int syncTime = mSharedPreferences.getInt(context.getString(R.string.pref_syncTime), 900);
+        ContentResolver.addPeriodicSync(account, context.getString(R.string.ACCOUNT_TYPE), Bundle.EMPTY, syncTime);
 
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean( ContentResolver.SYNC_EXTRAS_MANUAL, true );

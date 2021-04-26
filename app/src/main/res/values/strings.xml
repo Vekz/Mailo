@@ -8,4 +8,5 @@
     <string name="welcome">"Welcome "</string>
     <string name="login_failed">Wrong credentials</string>
     <string name="title_activity_authenticator">Login</string>
+    <string name="mailo_logo_desc">Pale yellow-orange background in shape of rounded square with dark orange envelope pictogram in the foreground.</string>
 </resources>

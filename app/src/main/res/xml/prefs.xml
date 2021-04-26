@@ -1,6 +1,6 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
-        android:key="@string/pref_sync_time"
+        android:key="@string/pref_syncTime"
         android:title="Synchronization Time"
         android:entries="@array/SyncTime"
         android:entryValues="@array/SyncTime_values"/>

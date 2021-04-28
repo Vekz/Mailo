@@ -1,10 +1,6 @@
 package ap.mailo.auth;
 
-import ap.mailo.R;
-import ap.mailo.util.AccountAuthenticatorAppCompatActivity;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +13,9 @@ import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
+
+import ap.mailo.R;
+import ap.mailo.util.AccountAuthenticatorAppCompatActivity;
 
 public class Login extends AccountAuthenticatorAppCompatActivity {
     private LoginViewModel loginViewModel;
@@ -62,10 +61,6 @@ public class Login extends AccountAuthenticatorAppCompatActivity {
                 updateUiWithUser(loginResult.getSuccess());
                 finishLogin(loginResult.getSuccess());
             }
-            setResult(Activity.RESULT_OK);
-
-            //Complete and destroy login activity once successful
-            finish();
         });
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
@@ -110,6 +105,8 @@ public class Login extends AccountAuthenticatorAppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putParcelable(LoggedInUser.ACCOUNT_INFO, success);
         setAccountAuthenticatorResult(bundle);
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 
     private void updateUiWithUser(LoggedInUser model) {
@@ -119,8 +116,18 @@ public class Login extends AccountAuthenticatorAppCompatActivity {
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+        clearView();
+    }
+
+    private void clearView(){
+        usernameEditText = findViewById(R.id.username);
+        passwordEditText = findViewById(R.id.password);
+        loginButton = findViewById(R.id.login);
+        loadingProgressBar = findViewById(R.id.loading);
+
+        usernameEditText.setText(null);
+        passwordEditText.setText(null);
+        loginButton.setEnabled(false);
+        loadingProgressBar.setVisibility(View.GONE);
     }
 }

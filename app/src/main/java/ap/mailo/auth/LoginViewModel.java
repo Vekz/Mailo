@@ -5,7 +5,6 @@ import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -15,18 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.preference.PreferenceManager;
 
-import java.io.InputStream;
-import java.net.URL;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import ap.mailo.R;
-import ap.mailo.util.DomainParser;
-import ap.mailo.util.UserDomainHandler;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
 
 public class LoginViewModel extends ViewModel {
 
@@ -65,53 +53,8 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String mail, String password, Context context){
         Log.d(context.getString(R.string.app_name), TAG + "> login");
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    // Get domain for user's mail
-                    String domain = DomainParser.parseDomain(mail);
 
-                    // Check ISPDB for MX server settings
-                    String url = "https://autoconfig.thunderbird.net/v1.1/" + domain;
-
-                    // Setup SAX Parser and our XML handler
-                    SAXParserFactory factory = SAXParserFactory.newInstance();
-
-                    // Protect from XXE attacks
-                    factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-                    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-
-                    SAXParser saxParser = factory.newSAXParser();
-                    UserDomainHandler handler = new UserDomainHandler(mail, password, domain);
-
-                    // Then parse XML
-                    InputStream uri = new URL(url).openStream();
-                    saxParser.parse(uri, handler);
-
-                    LoggedInUser user = handler.getUser();
-
-                    Session session = Session.getInstance(user.getSMTPProperties(),
-                            new jakarta.mail.Authenticator() {
-                                @Override
-                                protected PasswordAuthentication getPasswordAuthentication() {
-                                    return new PasswordAuthentication(mail, password);
-                                }
-                            }
-                    );
-
-                    Transport transport = session.getTransport("smtp");
-                    transport.connect(user.getHostSMTP(), mail, password);
-                    transport.close();
-
-                    loginResult.postValue(new LoginResult(user));
-                    return null;
-                } catch (Exception e) {
-                    loginResult.postValue(new LoginResult(R.string.login_failed));
-                    return null;
-                }
-            }
-        }.execute();
+        LoginNetwork.loginUser(mail, password).subscribe(result -> loginResult.postValue(result));
     }
 
     public void finishLogin(LoggedInUser success, Context context) {

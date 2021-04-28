@@ -17,39 +17,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mailo">
-        <activity
-            android:name=".auth.Login"
-            android:label="@string/title_activity_authenticator">
+        <activity android:name=".main.MainActivity" />
+        <!-- Splash screen activity -->
+        <activity android:name=".main.EntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <!-- Login activity -->
+        <activity
+            android:name=".auth.Login"
+            android:label="@string/title_activity_authenticator" />
+        <!-- Service for Accounts&Sync settings integration -->
         <service android:name=".auth.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
-<!--        <provider-->
-<!--            android:name=".sync.StubProvider"-->
-<!--            android:authorities="@string/ACCOUNT_TYPE"-->
-<!--            android:exported="false"-->
-<!--            android:syncable="true" />-->
-<!--        <service-->
-<!--            android:name=".sync.InboxSyncService"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.content.SyncAdapter" />-->
-<!--            </intent-filter>-->
-<!--            <meta-data-->
-<!--                android:name="android.content.SyncAdapter"-->
-<!--                android:resource="@xml/sync_adapter" />-->
-<!--        </service>-->
     </application>
 
 </manifest>

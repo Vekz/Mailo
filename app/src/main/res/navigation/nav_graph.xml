@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/messagesFragment">
+    <fragment
+        android:id="@+id/messagesFragment"
+        android:name="ap.mailo.main.MessagesFragment"
+        tools:layout="@layout/fragment_messages" >
+        <action
+            android:id="@+id/action_messagesFragment_self"
+            app:destination="@id/messagesFragment" />
+        <argument
+            android:name="ACC"
+            app:argType="ap.mailo.auth.LoggedInUser" />
+        <argument
+            android:name="folderName"
+            app:argType="string"
+            android:defaultValue="INDEX" />
+        <action
+            android:id="@+id/action_messagesFragment_to_readMessage"
+            app:destination="@id/readMessage" />
+        <action
+            android:id="@+id/action_messagesFragment_to_writeMessage"
+            app:destination="@id/writeMessage" />
+    </fragment>
+    <argument
+        android:name="folderName"
+        android:defaultValue="INBOX" />
+    <fragment
+        android:id="@+id/readMessage"
+        android:name="ap.mailo.main.ReadMessage"
+        tools:layout="@layout/fragment_read_message" >
+        <argument
+            android:name="ACC"
+            app:argType="ap.mailo.auth.LoggedInUser" />
+        <argument
+            android:name="msgNumber"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="folderName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeMessage"
+        android:name="ap.mailo.main.WriteMessage"
+        tools:layout="@layout/fragment_write_message" >
+        <argument
+            android:name="ACC"
+            app:argType="ap.mailo.auth.LoggedInUser" />
+    </fragment>
+</navigation>

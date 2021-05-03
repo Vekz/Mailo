@@ -1,4 +1,11 @@
 <resources>
+    <!-- Text sizes -->
+    <dimen name="H1">64sp</dimen>
+    <dimen name="H2">38sp</dimen>
+    <dimen name="H3">34sp</dimen>
+    <dimen name="H4">30sp</dimen>
+    <dimen name="Regular">24sp</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -7,12 +14,6 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="padding_sides">15dp</dimen>
 
-    <!-- Text sizes -->
-    <dimen name="H1">64sp</dimen>
-    <dimen name="H2">38sp</dimen>
-    <dimen name="H3">34sp</dimen>
-    <dimen name="H4">30sp</dimen>
-    <dimen name="Regular">24sp</dimen>
 
     <!-- Messages list -->
     <dimen name="list_from">15sp</dimen>

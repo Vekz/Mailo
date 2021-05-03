@@ -34,6 +34,7 @@ public class EntryActivity extends AppCompatActivity {
         intent.putExtra(LoggedInUser.ACCOUNT_INFO, acc);
         intent.putExtra(MainActivity.KEY_FolderName, "INBOX");
         startActivity(intent);
+        finish();
     }
 
     void launchAppOrLogin() {

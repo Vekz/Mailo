@@ -9,4 +9,9 @@
     <string name="login_failed">Wrong credentials</string>
     <string name="title_activity_authenticator">Login</string>
     <string name="mailo_logo_desc">Pale yellow-orange background in shape of rounded square with dark orange envelope pictogram in the foreground.</string>
+    <string name="main_button_description">Click to create message or hold to use voice command</string>
+    <string name="nav_header_title">Mailo</string>
+    <string name="nav_header_subtitle">unknown user - error</string>
+    <string name="FolderName">DEFAULT</string>
+    <string name="placeholder_text">Placeholder text</string>
 </resources>

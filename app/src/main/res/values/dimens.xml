@@ -4,7 +4,9 @@
     <dimen name="H2">38sp</dimen>
     <dimen name="H3">34sp</dimen>
     <dimen name="H4">30sp</dimen>
+    <dimen name="H5">26sp</dimen>
     <dimen name="Regular">24sp</dimen>
+    <dimen name="Small">20sp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

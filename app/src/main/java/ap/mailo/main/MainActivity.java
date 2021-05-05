@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         // Get attributes passed from EntryActivity
         String folderName = getIntent().getStringExtra(KEY_FolderName);
         ACC = getIntent().getParcelableExtra(LoggedInUser.ACCOUNT_INFO);
-        setTitle(folderName);
 
         // Bottom App Bar, bottom drawer and navigationController
         bottomAppBar = findViewById(R.id.bottomAppBar);
@@ -68,12 +67,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(bottomAppBar);
         BottomSheetBehavior<NavigationView> bottomSheetBehavior = BottomSheetBehavior.from(navigationView);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        scrim.setVisibility(View.GONE);
 
         // Bottom App Bar hamburger menu listener
         bottomAppBar.setNavigationOnClickListener(v -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
 
         // Scrim listener
-        scrim.setOnClickListener(view -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
+        scrim.setOnClickListener(view -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            scrim.setVisibility(View.GONE);
+        });
 
         // On slide of bottom drawer scrim should get darker colour starting from 60% opacity black
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                scrim.setVisibility(View.VISIBLE);
                 int baseColor = Color.BLACK;
                 // 60% opacity
                 float baseAlpha = ResourcesCompat.getFloat(getResources(), R.dimen.material_emphasis_medium);
@@ -109,9 +113,11 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle1 = new Bundle();
             bundle1.putParcelable(KEY_Acc, ACC);
             bundle1.putString(KEY_FolderName, folderName1);
+            navController.popBackStack(R.id.messagesFragment, true);
             navController.navigate(R.id.messagesFragment, bundle1);
 
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            scrim.setVisibility(View.GONE);
             return true;
         });
         navigationView.bringToFront();
@@ -147,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 Store store = emailSession.getStore("imaps");
                 store.connect(ACC.getHostIMAP(), ACC.getMail(), ACC.getPassword());
 
-                //Get inboxFolder
+                //Get folders
                 Folder[] folders = store.getDefaultFolder().listSubscribed();
 
                 for (Folder folder : folders) {

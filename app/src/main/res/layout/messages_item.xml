@@ -3,23 +3,36 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/item_spacing"
-    android:background="?customColorValue"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/padding_sides"
     android:paddingVertical="@dimen/item_padding">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="?android:attr/listDivider" />
 
     <TextView
         android:id="@+id/list_item_from"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/Regular"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:textSize="@dimen/Small"
         android:text="@string/placeholder_text"/>
 
     <TextView
         android:id="@+id/list_item_Subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/H4"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:textSize="@dimen/Regular"
+        android:textColor="@color/black"
         android:text="@string/placeholder_text"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="?android:attr/listDivider" />
 
 </LinearLayout>

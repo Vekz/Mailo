@@ -27,7 +27,7 @@
     </fragment>
     <argument
         android:name="folderName"
-        android:defaultValue="INBOX" />
+        android:defaultValue="Inbox" />
     <fragment
         android:id="@+id/readMessage"
         android:name="ap.mailo.main.ReadMessage"

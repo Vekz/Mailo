@@ -8,5 +8,8 @@
 
     <string name="pref_syncTime" translatable="false">syncTime</string>
 
-    <string name="defaultFolder" translatable="false">INBOX</string>
+    <string name="defaultFolder" translatable="false">Inbox</string>
+
+    <string name="UIDValidity" translatable="false">UIDValidity</string>
+    <string name="lastUID" translatable="false">lastUID</string>
 </resources>

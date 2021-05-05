@@ -30,9 +30,15 @@ public class EntryActivity extends AppCompatActivity {
         mAccountManager = AccountManager.get(getBaseContext());
         launchAppOrLogin();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(LoggedInUser.ACCOUNT_INFO, acc);
-        intent.putExtra(MainActivity.KEY_FolderName, "INBOX");
+        Intent intent;
+        if(acc != null) {
+            intent = new Intent(this, MainActivity.class);
+            intent.putExtra(LoggedInUser.ACCOUNT_INFO, acc);
+            intent.putExtra(MainActivity.KEY_FolderName, getString(R.string.defaultFolder));
+        } else {
+            intent = new Intent(this, EntryActivity.class);
+        }
+
         startActivity(intent);
         finish();
     }

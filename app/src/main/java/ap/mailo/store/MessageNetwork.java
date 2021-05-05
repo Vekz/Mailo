@@ -55,7 +55,7 @@ public class MessageNetwork {
                 Store store = emailSession.getStore("imaps");
                 store.connect(user.getHostIMAP(), user.getMail(), user.getPassword());
 
-                //Get inboxFolder
+                //Get folder
                 IMAPFolder folder = (IMAPFolder) store.getFolder(folderName);
                 folder.open(Folder.READ_ONLY);
                 long folderUIDValidity = folder.getUIDValidity();

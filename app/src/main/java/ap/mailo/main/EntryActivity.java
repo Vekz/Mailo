@@ -50,7 +50,8 @@ public class EntryActivity extends AppCompatActivity {
         } else {
             acc = new LoggedInUser(accounts[0], getBaseContext());
             SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-            int syncTime = mSharedPreferences.getInt(getString(R.string.pref_syncTime), 900);
+            String syncTime_str = mSharedPreferences.getString(getString(R.string.pref_syncTime), "900");
+            int syncTime = Integer.parseInt(syncTime_str);
             ContentResolver.addPeriodicSync(accounts[0], getString(R.string.ACCOUNT_TYPE), Bundle.EMPTY, syncTime);
         }
     }

@@ -79,9 +79,11 @@ public class AuthenticatorIMAP extends AbstractAccountAuthenticator {
             final Bundle result = new Bundle();
             result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
             result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
-            result.putString(AccountManager.KEY_PASSWORD, user.getPassword());
+            result.putString(AccountManager.KEY_AUTHTOKEN, user.getPassword());
             return result;
         } catch (Exception e) {
+            e.printStackTrace();
+
             final Intent intent = new Intent(mContext, Login.class);
             intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
             intent.putExtra(LoginViewModel.ARG_ACCOUNT_TYPE, account.type);

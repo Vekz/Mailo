@@ -15,4 +15,6 @@
     <string name="FolderName">DEFAULT</string>
     <string name="placeholder_text">Placeholder text</string>
     <string name="syncMessPrefs">syncmessprefs</string>
+    <string name="channel_name">Mailo</string>
+    <string name="channel_description">New mail</string>
 </resources>

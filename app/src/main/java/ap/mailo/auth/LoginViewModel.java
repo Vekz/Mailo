@@ -71,9 +71,9 @@ public class LoginViewModel extends ViewModel {
 
         //Set sync vars and request first sync
         ContentResolver.setSyncAutomatically(account, context.getString(R.string.ACCOUNT_TYPE), true);
-
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int syncTime = mSharedPreferences.getInt(context.getString(R.string.pref_syncTime), 900);
+        String syncTime_str = mSharedPreferences.getString(context.getString(R.string.pref_syncTime), "900");
+        int syncTime = Integer.parseInt(syncTime_str);
         ContentResolver.addPeriodicSync(account, context.getString(R.string.ACCOUNT_TYPE), Bundle.EMPTY, syncTime);
 
         Bundle settingsBundle = new Bundle();
@@ -81,13 +81,12 @@ public class LoginViewModel extends ViewModel {
         settingsBundle.putBoolean( ContentResolver.SYNC_EXTRAS_EXPEDITED, true );
         ContentResolver.requestSync(account, context.getString(R.string.ACCOUNT_TYPE), settingsBundle);
 
-        mAccountManager.setUserData(account, LoggedInUser.ACCOUNT_portSMTP, success.getHostSMTP());
+        mAccountManager.setUserData(account, LoggedInUser.ACCOUNT_hostSMTP, success.getHostSMTP());
         mAccountManager.setUserData(account, LoggedInUser.ACCOUNT_portSMTP, success.getPortSMTP());
         mAccountManager.setUserData(account, LoggedInUser.ACCOUNT_hostIMAP, success.getHostIMAP());
         mAccountManager.setUserData(account, LoggedInUser.ACCOUNT_portIMAP, success.getPortIMAP());
         mAccountManager.setUserData(account, LoggedInUser.ACCOUNT_socketTypeSMTP, success.getSocketTypeSMTP());
         mAccountManager.setUserData(account, LoggedInUser.ACCOUNT_socketTypeIMAP, success.getSocketTypeIMAP());
         mAccountManager.setUserData(account, LoggedInUser.ACCOUNT_shortDisplayName, success.getShortDisplayName());
-        mAccountManager.setUserData(account, LoggedInUser.ACCOUNT_messageAmount, "0");
     }
 }

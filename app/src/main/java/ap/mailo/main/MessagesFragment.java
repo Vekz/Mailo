@@ -161,7 +161,7 @@ public class MessagesFragment extends Fragment {
                     bundle.putParcelable(MainActivity.KEY_Acc, ACC);
                     bundle.putString(MainActivity.KEY_FolderName, folderName);
                     //bundle.putLong(ReadMessage.ARG_MESS_NR, messnr);
-                    //navController.navigate(R.id.readMessage, bundle);
+                    navController.navigate(R.id.readMessage, bundle);
                 }
             });
         }

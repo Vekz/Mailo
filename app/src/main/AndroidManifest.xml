@@ -41,6 +41,23 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+        <!-- Synchronization service -->
+        <provider
+            android:name=".sync.StubProvider"
+            android:authorities="@string/ACCOUNT_TYPE"
+            android:exported="false"
+            android:syncable="true" />
+
+        <service
+            android:name=".sync.InboxSyncService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_adapter" />
+        </service>
     </application>
 
 </manifest>

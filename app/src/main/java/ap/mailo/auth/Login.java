@@ -1,11 +1,9 @@
 package ap.mailo.auth;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -15,16 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 
 import ap.mailo.R;
-import ap.mailo.store.InboxViewModel;
-import ap.mailo.store.InboxViewModelFactory;
 import ap.mailo.util.AccountAuthenticatorAppCompatActivity;
 
 public class Login extends AccountAuthenticatorAppCompatActivity {

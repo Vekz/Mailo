@@ -9,6 +9,7 @@ import androidx.preference.PreferenceManager;
 
 import com.sun.mail.imap.IMAPFolder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +18,20 @@ import ap.mailo.auth.LoggedInUser;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import jakarta.mail.Address;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Flags;
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.Part;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
 import jakarta.mail.Store;
 import jakarta.mail.UIDFolder;
+
+import static jakarta.mail.internet.MimeUtility.decodeText;
 
 public class MessageNetwork {
 
@@ -106,6 +112,46 @@ public class MessageNetwork {
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static Single<String[]> loadMessage(LoggedInUser user, long UID, String folderName) {
+        return Single.fromCallable(() -> {
+            try {
+                //Connect to IMAP server
+                Session emailSession = Session.getInstance(user.getIMAPProperties(),
+                        new jakarta.mail.Authenticator() {
+                            @Override
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(user.getMail(), user.getPassword());
+                            }
+                        });
+                Store store = emailSession.getStore("imaps");
+                store.connect(user.getHostIMAP(), user.getMail(), user.getPassword());
+
+                //Get folder
+                IMAPFolder folder = (IMAPFolder) store.getFolder(folderName);
+                folder.open(Folder.READ_ONLY);
+
+                Message message = folder.getMessageByUID(UID);
+
+                String[] parts = new String[4];
+                parts[0] = message.getSubject();
+                parts[1] = decodeText(message.getFrom()[0].toString());
+                parts[2] = "";
+
+                Address[] recipients = message.getRecipients(Message.RecipientType.TO);
+                for(Address ad : recipients) {
+                    parts[2] += decodeText(ad.toString());
+                }
+
+                parts[3] = getText(message);
+
+                return parts;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new String[0];
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
     // Get headers from messages
     private static MessageHeader[] getHeadersFromMessages(Message[] messages, IMAPFolder folder) {
         List<MessageHeader> headers = new ArrayList<>();
@@ -150,4 +196,43 @@ public class MessageNetwork {
         }
         return uids;
     }
+
+    /* Code from https://gist.github.com/winterbe/5958387 */
+    private static String getText(Part p) throws MessagingException, IOException {
+        if (p.isMimeType("text/*")) {
+            String s = (String)p.getContent();
+            return s;
+        }
+
+        if (p.isMimeType("multipart/alternative")) {
+            // prefer html text over plain text
+            Multipart mp = (Multipart)p.getContent();
+            String text = null;
+            for (int i = 0; i < mp.getCount(); i++) {
+                Part bp = mp.getBodyPart(i);
+                if (bp.isMimeType("text/plain")) {
+                    if (text == null)
+                        text += getText(bp);
+                    continue;
+                } else if (bp.isMimeType("text/html")) {
+                    String s = getText(bp);
+                    if (s != null)
+                        return s;
+                } else {
+                    return getText(bp);
+                }
+            }
+            return text;
+        } else if (p.isMimeType("multipart/*")) {
+            Multipart mp = (Multipart)p.getContent();
+            for (int i = 0; i < mp.getCount(); i++) {
+                String s = getText(mp.getBodyPart(i));
+                if (s != null)
+                    return s;
+            }
+        }
+
+        return null;
+    }
+
 }

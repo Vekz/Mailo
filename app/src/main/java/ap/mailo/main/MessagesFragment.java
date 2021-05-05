@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.UnsupportedEncodingException;
@@ -118,6 +120,11 @@ public class MessagesFragment extends Fragment {
         TextView titleView = view.findViewById(R.id.FolderTitle);
         titleView.setText(folderName);
 
+        if(getActivity() != null) {
+            FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+            fab.setImageResource(R.drawable.ic_create_24dp);
+        }
+
         return swipeRefreshLayout;
     }
 
@@ -160,7 +167,7 @@ public class MessagesFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(MainActivity.KEY_Acc, ACC);
                     bundle.putString(MainActivity.KEY_FolderName, folderName);
-                    //bundle.putLong(ReadMessage.ARG_MESS_NR, messnr);
+                    bundle.putLong(ReadMessage.ARG_MESS_NR, messnr);
                     navController.navigate(R.id.readMessage, bundle);
                 }
             });

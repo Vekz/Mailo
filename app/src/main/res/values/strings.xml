@@ -21,7 +21,12 @@
     <string name="readSubjectDefault">\t\t This message has no subject</string>
     <string name="readFromDefault">Couldn\'t get sender of this message</string>
     <string name="readToDefault">Couldn\'t get addressee of this message</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="writeTo">To</string>
+    <string name="writeSubject">Subject</string>
+    <string name="writeContent">Write your mail content here…</string>
     <string name="go_back">Go Back</string>
+    <string name="comma_separation">Addresses should be comma separated!</string>
+    <string name="empty_recipient">Wrong information provided</string>
+    <string name="succes_sending">Successfully send a message!</string>
+    <string name="failure_sending">Failed sending a message. Try again later!</string>
 </resources>

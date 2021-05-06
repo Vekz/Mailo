@@ -123,6 +123,12 @@ public class MessagesFragment extends Fragment {
         if(getActivity() != null) {
             FloatingActionButton fab = getActivity().findViewById(R.id.fab);
             fab.setImageResource(R.drawable.ic_create_24dp);
+            fab.setEnabled(true);
+            fab.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+                navController.navigate(R.id.writeMessage, bundle);
+            });
         }
 
         return swipeRefreshLayout;

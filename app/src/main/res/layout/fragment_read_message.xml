@@ -16,7 +16,7 @@
         android:src="@drawable/ic_back_arrow"
         android:contentDescription="@string/go_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/back"
+        app:layout_constraintRight_toLeftOf="@id/readSubject"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView

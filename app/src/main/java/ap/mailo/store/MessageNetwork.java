@@ -11,10 +11,12 @@ import com.sun.mail.imap.IMAPFolder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ap.mailo.R;
 import ap.mailo.auth.LoggedInUser;
+import ap.mailo.main.WriteMessage;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -29,7 +31,12 @@ import jakarta.mail.Part;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
 import jakarta.mail.Store;
+import jakarta.mail.Transport;
 import jakarta.mail.UIDFolder;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 
 import static jakarta.mail.internet.MimeUtility.decodeText;
 
@@ -148,6 +155,45 @@ public class MessageNetwork {
             } catch (Exception e) {
                 e.printStackTrace();
                 return new String[0];
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static Single<Boolean> sendMessage(LoggedInUser user, Address[] recipients, String subject, String content){
+        return Single.fromCallable(() -> {
+            try {
+                //Connect to IMAP server
+                Session emailSession = Session.getInstance(user.getSMTPProperties(),
+                        new Authenticator() {
+                            @Override
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(user.getMail(), user.getPassword());
+                            }
+                        });
+
+                try {
+                    Message message = new MimeMessage(emailSession);
+                    message.setFrom(new InternetAddress(user.getMail()));
+                    message.setRecipients(Message.RecipientType.TO, recipients);
+                    message.setSubject(subject);
+
+                    Multipart multipart = new MimeMultipart();
+                    MimeBodyPart messageBodyPart = new MimeBodyPart();
+                    messageBodyPart.setText(content);
+                    multipart.addBodyPart(messageBodyPart);
+
+                    message.setContent(multipart);
+                    message.setSentDate(new Date());
+
+                    Transport.send(message);
+                    return true;
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                    throw e;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }

@@ -78,7 +78,6 @@ public class ReadMessage extends Fragment {
         NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
-
         loadMessage();
     }
 
@@ -115,6 +114,7 @@ public class ReadMessage extends Fragment {
         if(activity != null) {
             FloatingActionButton fab = activity.findViewById(R.id.fab);
             fab.setImageResource(R.drawable.ic_baseline_reply_24);
+            fab.setEnabled(true);
         }
 
         contentView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);

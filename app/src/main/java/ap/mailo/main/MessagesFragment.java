@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -101,8 +102,6 @@ public class MessagesFragment extends Fragment {
         });
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -120,15 +119,20 @@ public class MessagesFragment extends Fragment {
         TextView titleView = view.findViewById(R.id.FolderTitle);
         titleView.setText(folderName);
 
-        if(getActivity() != null) {
-            FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-            fab.setImageResource(R.drawable.ic_create_24dp);
-            fab.setEnabled(true);
-            fab.setOnClickListener(v -> {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(MainActivity.KEY_Acc, ACC);
-                navController.navigate(R.id.writeMessage, bundle);
-            });
+        //Setup activity
+        FragmentActivity activity = getActivity();
+
+        if(activity != null) {
+            FloatingActionButton fab = activity.findViewById(R.id.fab);
+            if(fab != null) {
+                fab.setImageResource(R.drawable.ic_create_24dp);
+                fab.setEnabled(true);
+                fab.setOnClickListener(v -> {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+                    navController.navigate(R.id.writeMessage, bundle);
+                });
+            }
         }
 
         return swipeRefreshLayout;

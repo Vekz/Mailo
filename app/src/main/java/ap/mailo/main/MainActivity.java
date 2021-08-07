@@ -181,7 +181,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Set menus as checkable
         for(int i = 0; i < menu.size(); i++){
-            navigationView.getMenu().getItem(i).setCheckable(true);
+            var menuItem = navigationView.getMenu().getItem(i);
+            menuItem.setCheckable(true);
+
+            if(getString(R.string.defaultFolder).equalsIgnoreCase(menuItem.getTitle().toString())){
+                menuItem.setChecked(true);
+            }
         }
     }
 

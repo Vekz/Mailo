@@ -18,21 +18,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mailo">
+
         <!-- Splash screen activity -->
-        <activity android:name=".main.EntryActivity">
+        <activity
+            android:name=".main.EntryActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- Mailbox activity -->
-        <activity android:name=".main.MainActivity" />
+        <activity android:name=".main.MainActivity"
+                  android:exported="true"/>
+
         <!-- Login activity -->
         <activity
             android:name=".auth.Login"
-            android:label="@string/title_activity_authenticator" />
+            android:label="@string/title_activity_authenticator"
+            android:exported="true"/>
+
         <!-- Service for Accounts&Sync settings integration -->
-        <service android:name=".auth.AuthenticatorService">
+        <service android:name=".auth.AuthenticatorService"
+                 android:exported="true">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -41,6 +50,7 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
         <!-- Synchronization service -->
         <provider
             android:name=".sync.StubProvider"

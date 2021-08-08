@@ -18,7 +18,7 @@ jobs:
         FABRIC_API_KEY: ${{ secrets.FABRIC_API_KEY }}
         FABRIC_API_SECRET: ${{ secrets.FABRIC_API_SECRET }}
       with:
-        args: "sdkmanager 'platforms;android-31' && ./gradlew assembleDebug -PpreDexEnable=false"
+        args: "sdkmanager 'platforms;android-26' && ./gradlew assembleDebug -PpreDexEnable=false"
     - name: Check
       uses: vgaidarji/android-github-actions-build@v1.0.1
       env:
@@ -56,7 +56,7 @@ jobs:
           FABRIC_API_KEY: ${{ secrets.FABRIC_API_KEY }}
           FABRIC_API_SECRET: ${{ secrets.FABRIC_API_SECRET }}
         with:
-          api-level: 31
+          api-level: 29
           arch: x86
           disable-animations: true
           script: ./gradlew connectedAndroidTest --stacktrace

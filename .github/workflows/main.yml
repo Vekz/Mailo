@@ -1,4 +1,4 @@
-name: Instrumental Android tests
+name: Instrumentation Android tests
 on: [push]
 jobs:
   androidTest:

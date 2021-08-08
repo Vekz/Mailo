@@ -1,4 +1,4 @@
-name: Run instrumental Android tests
+name: Instrumental Android tests
 on: [push]
 jobs:
   androidTest:

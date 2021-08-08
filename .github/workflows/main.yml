@@ -5,13 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
     - name: Build
       uses: vgaidarji/android-github-actions-build@v1.0.1
       env:
         FABRIC_API_KEY: ${{ secrets.FABRIC_API_KEY }}
         FABRIC_API_SECRET: ${{ secrets.FABRIC_API_SECRET }}
       with:
-        args: "sdkmanager 'platforms;android-26' && ./gradlew assembleDebug -PpreDexEnable=false"
+        args: "sdkmanager 'platforms;android-31' && ./gradlew assembleDebug -PpreDexEnable=false"
     - name: Check
       uses: vgaidarji/android-github-actions-build@v1.0.1
       env:
@@ -36,13 +38,15 @@ jobs:
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
       - name: Instrumentation Tests
         uses: reactivecircus/android-emulator-runner@v2
         env:
           FABRIC_API_KEY: ${{ secrets.FABRIC_API_KEY }}
           FABRIC_API_SECRET: ${{ secrets.FABRIC_API_SECRET }}
         with:
-          api-level: 29
+          api-level: 31
           arch: x86
           disable-animations: true
           script: ./gradlew connectedAndroidTest --stacktrace

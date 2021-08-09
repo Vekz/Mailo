@@ -53,7 +53,7 @@ public abstract class BaseUITest
         assert getLoginResult().getSuccess() != null;
         loginViewModel.finishLogin(getLoginResult().getSuccess(), appContext);
 
-        Log.INFO("Logged in before test cases");
+        Log.i("BASE TEST: ","Logged in before test cases");
     }
 
     @AfterClass
@@ -64,7 +64,7 @@ public abstract class BaseUITest
         if (accounts.length > 0) {
             Account accountToRemove = accounts[0];
             am.removeAccount(accountToRemove, null, null, null);
-            Log.INFO("Logged out after test cases");
+            Log.i("BASE TEST: ", "Logged out after test cases");
         }
     }
 

@@ -38,3 +38,5 @@ obj/
 /app/src/test/res/account.json
 
 app/src/androidTest/res/account.json
+
+app/src/main/res/raw/account.json

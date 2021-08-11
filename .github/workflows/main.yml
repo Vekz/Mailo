@@ -12,6 +12,11 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: set up account.json
+        env: 
+          ACCOUNT_JSON: ${{ toJSON(secrets) }}
+        run:
+          echo $ACCOUNT_JSON > app/src/main/res/raw/account.json
       - name: Instrumentation Tests
         uses: reactivecircus/android-emulator-runner@v2
         env:

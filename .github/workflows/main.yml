@@ -16,6 +16,7 @@ jobs:
         env: 
           ACCOUNT_JSON: ${{ toJSON(secrets) }}
         run:
+          mkdir -p -- app/src/main/res/raw
           echo $ACCOUNT_JSON > app/src/main/res/raw/account.json
       - name: Instrumentation Tests
         uses: reactivecircus/android-emulator-runner@v2

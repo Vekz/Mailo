@@ -71,8 +71,8 @@ public abstract class BaseUITest
         String jsonString = writer.toString();
 
         JSONObject obj = new JSONObject(jsonString);
-        mail = obj.getString("mail");
-        password = obj.getString("password");
+        mail = obj.getString("MAIL");
+        password = obj.getString("PASSWORD");
     }
 
     @BeforeClass

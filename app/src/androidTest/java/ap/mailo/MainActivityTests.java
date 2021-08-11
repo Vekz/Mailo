@@ -53,6 +53,8 @@ public class MainActivityTests extends BaseUITest
                 withParent(isAssignableFrom(Toolbar.class))))
                 .perform(click());
 
+        Thread.sleep(2000);
+
         onView(allOf(childAtPosition(
                         allOf(withId(R.id.design_navigation_view),
                                 childAtPosition(
@@ -62,6 +64,8 @@ public class MainActivityTests extends BaseUITest
                         isDisplayed()))
             .perform(click());
 
+        Thread.sleep(2000);
+        
         onView(withId(R.id.FolderTitle)).check(matches(withText("Drafts")));
     }
 

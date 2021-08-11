@@ -94,7 +94,7 @@ public class MainActivityTests extends BaseUITest
     }
 
     @Test
-    public void composeIncorrectMail() throws InterruptedException S{
+    public void composeIncorrectMail() throws InterruptedException {
 
         onView(withId(R.id.fab)).perform(click());
 

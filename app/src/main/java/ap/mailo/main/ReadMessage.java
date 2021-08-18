@@ -132,7 +132,7 @@ public class ReadMessage extends Fragment {
         String subject = body[0];
         String from = body[1];
         String to = body[2];
-        String content = body[3];
+        String content = "<div id='content'>" + body[3] + "</div>";
 
         subjectView.setText("\t\t" + subject);
         fromView.setText(from);

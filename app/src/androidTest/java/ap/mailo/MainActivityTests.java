@@ -71,30 +71,15 @@ public class MainActivityTests extends BaseUITest
 
     @Test
     public void openMenuAndChangeMailFolder() throws InterruptedException {
+        changeMessageFolderIntoABC();
 
-        onView(allOf(isAssignableFrom(ImageButton.class),
-                withParent(isAssignableFrom(Toolbar.class))))
-                .perform(click());
-
-        Thread.sleep(5000);
-
-        onView(allOf(childAtPosition(
-                        allOf(withId(R.id.design_navigation_view),
-                                childAtPosition(
-                                        withId(R.id.navigationView),
-                                        0)),
-                        2),
-                        isDisplayed()))
-            .perform(click());
-
-        Thread.sleep(5000);
+        Thread.sleep(10000);
         
-        onView(withId(R.id.FolderTitle)).check(matches(withText("Drafts")));
+        onView(withId(R.id.FolderTitle)).check(matches(withText("ABC")));
     }
 
     @Test
     public void composeCorrectMailAndSend() throws InterruptedException {
-
         onView(withId(R.id.fab)).perform(click());
 
         Thread.sleep(5000);
@@ -115,7 +100,6 @@ public class MainActivityTests extends BaseUITest
 
     @Test
     public void composeIncorrectMail() throws InterruptedException {
-
         onView(withId(R.id.fab)).perform(click());
 
         Thread.sleep(5000);
@@ -137,22 +121,9 @@ public class MainActivityTests extends BaseUITest
 
     @Test
     public void checkIfMessageIsCorrectlyDisplayed() throws InterruptedException {
-        onView(allOf(isAssignableFrom(ImageButton.class),
-                withParent(isAssignableFrom(Toolbar.class))))
-                .perform(click());
+        changeMessageFolderIntoABC();
 
-        Thread.sleep(5000);
-
-        onView(allOf(childAtPosition(
-                allOf(withId(R.id.design_navigation_view),
-                        childAtPosition(
-                                withId(R.id.navigationView),
-                                0)),
-                1),
-                isDisplayed()))
-                .perform(click());
-
-        Thread.sleep(5000);
+        Thread.sleep(10000);
 
         onView(withId(R.id.FolderTitle)).check(matches(withText("ABC")));
 
@@ -160,40 +131,16 @@ public class MainActivityTests extends BaseUITest
 
         Thread.sleep(5000);
 
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.messages_recyclerview),
-                        childAtPosition(
-                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                1)));
-        recyclerView.perform(actionOnItemAtPosition(0, click()));
+        openFirstMessageInFolder();
 
         Thread.sleep(5000);
 
-        onView(withId(R.id.readSubject)).check(matches(withText(containsString("Test"))));
-        onWebView(withId(R.id.readBody))
-                .forceJavascriptEnabled()
-                .withElement(findElement(Locator.ID, "content"))
-                .check(webMatches(getText(), containsString("Test")));
-        onView(withId(R.id.readFrom)).check(matches(withText(containsString("porowski126@wp.pl"))));
-        onView(withId(R.id.readTo)).check(matches(withText(containsString("example@example.com"))));
+        checkTestMessage();
     }
 
     @Test
     public void checkIfReplyInfoIsCopiedAndSendCorrectly() throws InterruptedException {
-        onView(allOf(isAssignableFrom(ImageButton.class),
-                withParent(isAssignableFrom(Toolbar.class))))
-                .perform(click());
-
-        Thread.sleep(5000);
-
-        onView(allOf(childAtPosition(
-                allOf(withId(R.id.design_navigation_view),
-                        childAtPosition(
-                                withId(R.id.navigationView),
-                                0)),
-                1),
-                isDisplayed()))
-                .perform(click());
+        changeMessageFolderIntoABC();
 
         Thread.sleep(5000);
 
@@ -203,22 +150,11 @@ public class MainActivityTests extends BaseUITest
 
         Thread.sleep(5000);
 
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.messages_recyclerview),
-                        childAtPosition(
-                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                1)));
-        recyclerView.perform(actionOnItemAtPosition(0, click()));
+        openFirstMessageInFolder();
 
         Thread.sleep(5000);
 
-        onView(withId(R.id.readSubject)).check(matches(withText(containsString("Test"))));
-        onWebView(withId(R.id.readBody))
-                .forceJavascriptEnabled()
-                .withElement(findElement(Locator.ID, "content"))
-                .check(webMatches(getText(), containsString("Test")));
-        onView(withId(R.id.readFrom)).check(matches(withText(containsString("porowski126@wp.pl"))));
-        onView(withId(R.id.readTo)).check(matches(withText(containsString("example@example.com"))));
+        checkTestMessage();
 
         onView(withId(R.id.fab)).perform(click());
 
@@ -236,6 +172,42 @@ public class MainActivityTests extends BaseUITest
 
         //isToastMessageDisplayed(R.string.succes_sending); Check is not working in SDK31
         onView(withId(R.id.FolderTitle)).check(matches(isDisplayed()));
+    }
+
+    private void changeMessageFolderIntoABC() throws InterruptedException {
+        onView(allOf(isAssignableFrom(ImageButton.class),
+                withParent(isAssignableFrom(Toolbar.class))))
+                .perform(click());
+
+        Thread.sleep(5000);
+
+        onView(allOf(childAtPosition(
+                allOf(withId(R.id.design_navigation_view),
+                        childAtPosition(
+                                withId(R.id.navigationView),
+                                0)),
+                1),
+                isDisplayed()))
+                .perform(click());
+    }
+
+    private void openFirstMessageInFolder() {
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.messages_recyclerview),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                1)));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
+    }
+
+    private void checkTestMessage() {
+        onView(withId(R.id.readSubject)).check(matches(withText(containsString("Test"))));
+        onWebView(withId(R.id.readBody))
+                .forceJavascriptEnabled()
+                .withElement(findElement(Locator.ID, "content"))
+                .check(webMatches(getText(), containsString("Test")));
+        onView(withId(R.id.readFrom)).check(matches(withText(containsString("porowski126@wp.pl"))));
+        onView(withId(R.id.readTo)).check(matches(withText(containsString("example@example.com"))));
     }
 
     //Matchers

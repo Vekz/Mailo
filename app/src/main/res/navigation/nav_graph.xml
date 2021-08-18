@@ -25,9 +25,6 @@
             android:id="@+id/action_messagesFragment_to_writeMessage"
             app:destination="@id/writeMessage" />
     </fragment>
-    <argument
-        android:name="folderName"
-        android:defaultValue="Inbox" />
     <fragment
         android:id="@+id/readMessage"
         android:name="ap.mailo.main.ReadMessage"
@@ -37,11 +34,14 @@
             app:argType="ap.mailo.auth.LoggedInUser" />
         <argument
             android:name="msgNumber"
-            app:argType="integer"
-            android:defaultValue="0" />
+            app:argType="long"
+            android:defaultValue="0L" />
         <argument
             android:name="folderName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_readMessage_to_writeMessage"
+            app:destination="@id/writeMessage" />
     </fragment>
     <fragment
         android:id="@+id/writeMessage"
@@ -50,5 +50,14 @@
         <argument
             android:name="ACC"
             app:argType="ap.mailo.auth.LoggedInUser" />
+        <argument
+            android:name="msgNumber"
+            app:argType="long"/>
+        <argument
+        android:name="folderName"
+        app:argType="string" />
+        <action
+            android:id="@+id/action_writeMessage_to_messagesFragment2"
+            app:popUpTo="@+id/messagesFragment"/>
     </fragment>
 </navigation>

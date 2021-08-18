@@ -34,6 +34,10 @@ import jakarta.mail.internet.InternetAddress;
  */
 public class WriteMessage extends Fragment {
 
+    public static final String ARG_MESS_NR = "MESS_NR";
+
+    private String folderName;
+    private Long messnr;
     private LoggedInUser ACC;
 
     private EditText writeRecipient;
@@ -60,9 +64,11 @@ public class WriteMessage extends Fragment {
      * @param ACC User details.
      * @return A new instance of fragment WriteMessage.
      */
-    public static WriteMessage newInstance(LoggedInUser ACC) {
+    public static WriteMessage newInstance(Long messnr, String folderName, LoggedInUser ACC) {
         WriteMessage fragment = new WriteMessage();
         Bundle args = new Bundle();
+        args.putLong(ARG_MESS_NR, messnr);
+        args.putString(MainActivity.KEY_FolderName, folderName);
         args.putParcelable(MainActivity.KEY_Acc, ACC);
         fragment.setArguments(args);
         return fragment;
@@ -73,11 +79,14 @@ public class WriteMessage extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             ACC = getArguments().getParcelable(MainActivity.KEY_Acc);
+            folderName = getArguments().getString(MainActivity.KEY_FolderName);
+            messnr = getArguments().getLong(ARG_MESS_NR);
         }
 
         //Get NavigationController vars
         NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
+
 
         recipients = null;
         subject = "";
@@ -96,6 +105,9 @@ public class WriteMessage extends Fragment {
         writeContent = view.findViewById(R.id.writeContent);
 
         backBtn.setOnClickListener(v -> navController.popBackStack());
+
+        if(messnr != null && folderName != null)
+            loadMessage();
 
         return view;
     }
@@ -185,15 +197,38 @@ public class WriteMessage extends Fragment {
 
     }
 
-    public void sendMessage() {
+    private void sendMessage() {
 
         MessageNetwork.sendMessage(this.ACC, this.recipients, this.subject, this.content).subscribe(send -> {
             if (send) {
                 Toast.makeText(getContext(), getString(R.string.succes_sending), Toast.LENGTH_SHORT).show();
-                navController.popBackStack();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+                bundle.putString(MainActivity.KEY_FolderName, folderName);
+                navController.navigate(R.id.messagesFragment, bundle);
             } else {
                 Toast.makeText(getContext(), getString(R.string.failure_sending), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void loadMessage(){
+        MessageNetwork.loadMessage(ACC, messnr, folderName).subscribe(body -> {
+            if (body.length > 0) {
+                setContent(body);
+            }
+        });
+    }
+
+    private void setContent(String[] body){
+        String subject = "Re: "+  body[0];
+        String from = body[1];
+        String content = "\r\n\r\n\r\n" + body[3]
+                            .replaceAll("\\<.*?\\>", "")
+                            .replaceAll("(?m)^", "\t\t> ");
+
+        writeSubject.setText(subject);
+        writeRecipient.setText(from);
+        writeContent.setText(content);
     }
 }

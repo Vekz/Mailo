@@ -168,7 +168,7 @@ public class MainActivityTests extends BaseUITest
 
         onView(withId(R.id.fab)).perform(click());
 
-        Thread.sleep(5000);
+        Thread.sleep(10000);
 
         //isToastMessageDisplayed(R.string.succes_sending); Check is not working in SDK31
         onView(withId(R.id.FolderTitle)).check(matches(isDisplayed()));

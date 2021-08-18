@@ -28,7 +28,7 @@
             android:layout_width="331dp"
             android:layout_height="69dp"
             android:hint="@string/writeSubject"
-            android:inputType="textCapSentences|textAutoCorrect"
+            android:inputType="textCapSentences|textAutoCorrect|textEmailSubject"
             android:paddingHorizontal="@dimen/padding_sides"
             android:textSize="@dimen/H4"/>
 
@@ -64,8 +64,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toMail"
         android:hint="@string/writeContent"
-        android:textSize="@dimen/Regular"
+        android:inputType="text|textLongMessage|textAutoComplete|textCapSentences|textAutoCorrect|textMultiLine"
         android:paddingHorizontal="@dimen/padding_sides"
-        android:inputType="textCapSentences|textAutoCorrect|textMultiLine" />
+        android:selectAllOnFocus="false"
+        android:singleLine="false"
+        android:textSize="@dimen/Regular" />
 
 </RelativeLayout>

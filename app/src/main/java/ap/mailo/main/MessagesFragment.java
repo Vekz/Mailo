@@ -130,6 +130,7 @@ public class MessagesFragment extends Fragment {
                 fab.setOnClickListener(v -> {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+                    bundle.putString(MainActivity.KEY_FolderName, folderName);
                     navController.navigate(R.id.writeMessage, bundle);
                 });
             }

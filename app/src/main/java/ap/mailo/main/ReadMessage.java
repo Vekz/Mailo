@@ -115,6 +115,13 @@ public class ReadMessage extends Fragment {
             FloatingActionButton fab = activity.findViewById(R.id.fab);
             fab.setImageResource(R.drawable.ic_baseline_reply_24);
             fab.setEnabled(true);
+            fab.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+                bundle.putString(MainActivity.KEY_FolderName, folderName);
+                bundle.putLong(ReadMessage.ARG_MESS_NR, messnr);
+                navController.navigate(R.id.writeMessage, bundle);
+            });
         }
 
         contentView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);

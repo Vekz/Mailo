@@ -57,6 +57,7 @@ public class MessagesFragment extends Fragment {
     private NavController navController;
     private InboxViewModel inboxVM;
     private MessageAdapter adapter;
+    private String mailto;
 
     public MessagesFragment() {
         // Required empty public constructor
@@ -70,11 +71,12 @@ public class MessagesFragment extends Fragment {
      * @param folderName - String, name of the folder to list.
      * @return A new instance of fragment MessagesFragment.
      */
-    public static MessagesFragment newInstance(LoggedInUser ACC, String folderName) {
+    public static MessagesFragment newInstance(LoggedInUser ACC, String folderName, String mailto) {
         MessagesFragment fragment = new MessagesFragment();
         Bundle args = new Bundle();
         args.putParcelable(MainActivity.KEY_Acc, ACC);
         args.putString(MainActivity.KEY_FolderName, folderName);
+        args.putString(WriteMessage.MAILTO_STRING, mailto);
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,6 +88,7 @@ public class MessagesFragment extends Fragment {
         if (getArguments() != null) {
             ACC = getArguments().getParcelable(MainActivity.KEY_Acc);
             folderName = getArguments().getString(MainActivity.KEY_FolderName);
+            mailto = getArguments().getString(WriteMessage.MAILTO_STRING);
         }
 
         // Create recycler view adapter
@@ -145,6 +148,8 @@ public class MessagesFragment extends Fragment {
 
         inboxVM.refreshMessages();
         swipeRefreshLayout.setRefreshing(true);
+
+        ifMailtoThenRedirectToWriteFragment();
     }
 
     private class MessageHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -166,7 +171,11 @@ public class MessagesFragment extends Fragment {
             }catch (UnsupportedEncodingException e) {
                 fromTextView.setText(message.getFrom());
             }
-            subjectTextView.setText(message.getSubject());
+            String subject = message.getSubject();
+            if(subject != null && !subject.isEmpty())
+                subjectTextView.setText(message.getSubject());
+            else
+                subjectTextView.setText(R.string.noTitle);
             messnr = message.getUID();
         }
 
@@ -224,4 +233,13 @@ public class MessagesFragment extends Fragment {
         }
     }
 
+    private void ifMailtoThenRedirectToWriteFragment() {
+        if(mailto != null) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+            bundle.putString(MainActivity.KEY_FolderName, folderName);
+            bundle.putString(WriteMessage.MAILTO_STRING, mailto);
+            navController.navigate(R.id.writeMessage, bundle);
+        }
+    }
 }

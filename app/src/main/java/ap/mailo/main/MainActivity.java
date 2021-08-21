@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // Get attributes passed from EntryActivity
         String folderName = getIntent().getStringExtra(KEY_FolderName);
         ACC = getIntent().getParcelableExtra(LoggedInUser.ACCOUNT_INFO);
+        String mailto = getIntent().getStringExtra(WriteMessage.MAILTO_STRING);
 
         // Bottom App Bar, bottom drawer and navigationController
         bottomAppBar = findViewById(R.id.bottomAppBar);
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_Acc, ACC);
         bundle.putString(KEY_FolderName, folderName);
+        bundle.putString(WriteMessage.MAILTO_STRING, mailto);
         navController.setGraph(R.navigation.nav_graph, bundle);
 
         navigationView.setNavigationItemSelectedListener(item -> {

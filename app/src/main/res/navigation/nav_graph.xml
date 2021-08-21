@@ -18,6 +18,11 @@
             android:name="folderName"
             app:argType="string"
             android:defaultValue="INBOX" />
+        <argument
+            android:name="mailto"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
         <action
             android:id="@+id/action_messagesFragment_to_readMessage"
             app:destination="@id/readMessage" />
@@ -51,11 +56,14 @@
             android:name="ACC"
             app:argType="ap.mailo.auth.LoggedInUser" />
         <argument
-            android:name="msgNumber"
-            app:argType="long"/>
+            android:name="folderName"
+            app:argType="string"
+            android:defaultValue="INBOX" />
         <argument
-        android:name="folderName"
-        app:argType="string" />
+            android:name="mailto"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
         <action
             android:id="@+id/action_writeMessage_to_messagesFragment2"
             app:popUpTo="@+id/messagesFragment"/>

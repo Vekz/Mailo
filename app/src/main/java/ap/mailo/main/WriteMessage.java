@@ -1,5 +1,6 @@
 package ap.mailo.main;
 
+import android.net.MailTo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -35,9 +36,10 @@ import jakarta.mail.internet.InternetAddress;
 public class WriteMessage extends Fragment {
 
     public static final String ARG_MESS_NR = "MESS_NR";
+    public static final String MAILTO_STRING = "mailto";
 
+    private String mailto;
     private String folderName;
-    private Long messnr;
     private LoggedInUser ACC;
 
     private EditText writeRecipient;
@@ -64,12 +66,12 @@ public class WriteMessage extends Fragment {
      * @param ACC User details.
      * @return A new instance of fragment WriteMessage.
      */
-    public static WriteMessage newInstance(Long messnr, String folderName, LoggedInUser ACC) {
+    public static WriteMessage newInstance(LoggedInUser ACC, String mailto, String folderName) {
         WriteMessage fragment = new WriteMessage();
         Bundle args = new Bundle();
-        args.putLong(ARG_MESS_NR, messnr);
-        args.putString(MainActivity.KEY_FolderName, folderName);
         args.putParcelable(MainActivity.KEY_Acc, ACC);
+        args.putString(MainActivity.KEY_FolderName, folderName);
+        args.putString(WriteMessage.MAILTO_STRING, mailto);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,7 +82,7 @@ public class WriteMessage extends Fragment {
         if (getArguments() != null) {
             ACC = getArguments().getParcelable(MainActivity.KEY_Acc);
             folderName = getArguments().getString(MainActivity.KEY_FolderName);
-            messnr = getArguments().getLong(ARG_MESS_NR);
+            mailto = getArguments().getString(WriteMessage.MAILTO_STRING);
         }
 
         //Get NavigationController vars
@@ -106,9 +108,6 @@ public class WriteMessage extends Fragment {
 
         backBtn.setOnClickListener(v -> navController.popBackStack());
 
-        if(messnr != null && folderName != null)
-            loadMessage();
-
         return view;
     }
 
@@ -131,6 +130,8 @@ public class WriteMessage extends Fragment {
             });
         }
 
+        if(mailto != null)
+            loadMessage();
 
         writeRecipient.addTextChangedListener(new TextWatcher() {
             private String line;
@@ -147,20 +148,7 @@ public class WriteMessage extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(line.contains(", ")) {
-                    line = line.replace(", ", ",");
-                }else if(line.contains(" ")){
-                    line = line.replace(" ", ",");
-                }
-
-                try {
-                    recipients = InternetAddress.parse(line);
-                    fab.setEnabled(true);
-                } catch (AddressException e) {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.comma_separation), Toast.LENGTH_SHORT).show();
-                    fab.setEnabled(false);
-                    e.printStackTrace();
-                }
+                checkAddressee(line);
             }
         });
         writeSubject.addTextChangedListener(new TextWatcher() {
@@ -213,22 +201,32 @@ public class WriteMessage extends Fragment {
     }
 
     private void loadMessage(){
-        MessageNetwork.loadMessage(ACC, messnr, folderName).subscribe(body -> {
-            if (body.length > 0) {
-                setContent(body);
-            }
-        });
-    }
-
-    private void setContent(String[] body){
-        String subject = "Re: "+  body[0];
-        String from = body[1];
-        String content = "\r\n\r\n\r\n" + body[3]
-                            .replaceAll("\\<.*?\\>", "")
-                            .replaceAll("(?m)^", "\t\t> ");
+        MailTo parsedMailto = MailTo.parse(mailto);
+        String subject = parsedMailto.getSubject() != null ? "Re: "+  parsedMailto.getSubject() : "";
+        String to = parsedMailto.getTo();
+        String content = parsedMailto.getBody();
 
         writeSubject.setText(subject);
-        writeRecipient.setText(from);
+        writeRecipient.setText(to);
         writeContent.setText(content);
+
+        checkAddressee(to);
+    }
+
+    private void checkAddressee(String line) {
+        if(line.contains(", ")) {
+            line = line.replace(", ", ",");
+        }else if(line.contains(" ")){
+            line = line.replace(" ", ",");
+        }
+
+        try {
+            recipients = InternetAddress.parse(line);
+            fab.setEnabled(true);
+        } catch (AddressException e) {
+            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.comma_separation), Toast.LENGTH_SHORT).show();
+            fab.setEnabled(false);
+            e.printStackTrace();
+        }
     }
 }

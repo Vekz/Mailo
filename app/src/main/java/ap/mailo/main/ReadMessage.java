@@ -40,6 +40,8 @@ public class ReadMessage extends Fragment {
     private TextView toView;
     private WebView contentView;
 
+    private String mailtoReply;
+
     private NavController navController;
 
     public ReadMessage() {
@@ -116,10 +118,11 @@ public class ReadMessage extends Fragment {
             fab.setImageResource(R.drawable.ic_baseline_reply_24);
             fab.setEnabled(true);
             fab.setOnClickListener(v -> {
+
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(MainActivity.KEY_Acc, ACC);
                 bundle.putString(MainActivity.KEY_FolderName, folderName);
-                bundle.putLong(ReadMessage.ARG_MESS_NR, messnr);
+                bundle.putString(WriteMessage.MAILTO_STRING, mailtoReply);
                 navController.navigate(R.id.writeMessage, bundle);
             });
         }
@@ -145,5 +148,13 @@ public class ReadMessage extends Fragment {
         fromView.setText(from);
         toView.setText(to);
         contentView.loadDataWithBaseURL(null, content, "text/html", null, null);
+
+        String replyFrom = from
+                            .replaceAll("\\<(.*?)\\>", "");
+        String replyBody = "\r\n\r\n\r\n" + content
+                            .replaceAll("\\<.*?\\>", "")
+                            .replaceAll("(?m)^", "\t\t> ");
+
+        mailtoReply = "mailto:" + replyFrom + "?subject=" + subject + "&body=" + replyBody;
     }
 }

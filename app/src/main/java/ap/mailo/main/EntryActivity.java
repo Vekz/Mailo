@@ -33,6 +33,8 @@ public class EntryActivity extends AppCompatActivity {
         Intent intent;
         if(acc != null) {
             intent = new Intent(this, MainActivity.class);
+            String mailto = getIntent().getDataString();
+            intent.putExtra(WriteMessage.MAILTO_STRING, mailto);
             intent.putExtra(LoggedInUser.ACCOUNT_INFO, acc);
             intent.putExtra(MainActivity.KEY_FolderName, getString(R.string.defaultFolder));
         } else {

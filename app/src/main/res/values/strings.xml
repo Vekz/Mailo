@@ -29,4 +29,5 @@
     <string name="empty_recipient">Wrong information provided</string>
     <string name="succes_sending">Successfully send a message!</string>
     <string name="failure_sending">Failed sending a message. Try again later!</string>
+    <string name="noTitle">No title</string>
 </resources>

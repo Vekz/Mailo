@@ -47,7 +47,20 @@ public class InboxRepository {
     }
 
     void deleteFromFolderByUIDs(long[] uids, String folderName) {
+        deleteFromFolderByUIDs(null, uids, folderName);
+    }
+
+    void deleteFromFolderByUIDs(LoggedInUser user, long[] uids, String folderName) {
         InboxDatabase.databaseWriteExecutor.execute(() -> messageHeaderDAO.deleteFromFolderByUIDs(uids, folderName.toUpperCase()));
+        if (user != null)
+        {
+            InternetChecker.hasInternetConnection()
+                    .subscribe(has -> {
+                        if (has) {
+                            MessageNetwork.setMessagesFlagAsDeleted(user, uids, folderName).subscribe();
+                        }
+                    });
+        }
     }
 
     void refreshMessages() {

@@ -37,5 +37,5 @@ public class InboxViewModel extends AndroidViewModel {
 
     public void nukeTableByFolder(String folderName) { inboxRepository.nukeTableByFolder(folderName); }
 
-    public void deleteFromFolderByUIDs(long[] uids, String folderName) { inboxRepository.deleteFromFolderByUIDs(uids, folderName); }
+    public void deleteFromFolderByUIDs(LoggedInUser user, long[] uids, String folderName) { inboxRepository.deleteFromFolderByUIDs(user, uids, folderName); }
 }

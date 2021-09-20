@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -57,6 +58,8 @@ public class MessagesFragment extends Fragment {
     private NavController navController;
     private InboxViewModel inboxVM;
     private MessageAdapter adapter;
+
+    private ArrayList<MessageHeader> messagesList = new ArrayList<>();
     private String mailto;
 
     public MessagesFragment() {
@@ -90,18 +93,23 @@ public class MessagesFragment extends Fragment {
             folderName = getArguments().getString(MainActivity.KEY_FolderName);
             mailto = getArguments().getString(WriteMessage.MAILTO_STRING);
         }
-
-        // Create recycler view adapter
-        adapter = new MessageAdapter(null);
-
         //Get NavigationController vars
         NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
         inboxVM = new ViewModelProvider(this, new InboxViewModelFactory(getActivity().getApplication(), folderName, ACC)).get(InboxViewModel.class);
-        inboxVM.getAll().observe(this, messages -> {
-            adapter.setMessages(messages);
-            swipeRefreshLayout.setRefreshing(false);
+        inboxVM.getAll().observe(this, new Observer<List<MessageHeader>>() {
+            @Override
+            public void onChanged(List<MessageHeader> messageHeaders) {
+                if(messagesList.size() > 0){
+                    messagesList.clear();
+                }
+                if(messageHeaders != null){
+                    messagesList.addAll(messageHeaders);
+                }
+                swipeRefreshLayout.setRefreshing(false);
+                adapter.notifyDataSetChanged();
+            }
         });
     }
 
@@ -114,9 +122,13 @@ public class MessagesFragment extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> inboxVM.refreshMessages());
 
+        // Create recycler view adapter
+        adapter = new MessageAdapter(messagesList);
+
         //Setup recyclerView
         recyclerView = view.findViewById(R.id.messages_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        new ItemTouchHelper(itemDeleteCallback).attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
 
         TextView titleView = view.findViewById(R.id.FolderTitle);
@@ -224,14 +236,31 @@ public class MessagesFragment extends Fragment {
             }
         }
 
-        public void setMessages(List<MessageHeader> messages) {
+        private void setMessages(List<MessageHeader> messages) {
             if(messages != null && !messages.isEmpty()) {
-                Collections.reverse(messages);
                 this.messages = messages;
-                notifyDataSetChanged();
             }
         }
     }
+
+    private void removeMessage(MessageHeader mess) {
+        messagesList.remove(mess);
+        adapter.notifyDataSetChanged();
+
+        inboxVM.deleteFromFolderByUIDs(ACC, new long[] {mess.getUID()}, folderName);
+    }
+
+    ItemTouchHelper.SimpleCallback itemDeleteCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i){
+            removeMessage(messagesList.get(viewHolder.getAdapterPosition()));
+        }
+    };
 
     private void ifMailtoThenRedirectToWriteFragment() {
         if(mailto != null) {

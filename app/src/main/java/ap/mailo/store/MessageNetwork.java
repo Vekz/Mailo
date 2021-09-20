@@ -198,6 +198,39 @@ public class MessageNetwork {
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static Single<Boolean> setMessagesFlagAsDeleted(LoggedInUser user, long[] uids, String folderName){
+        return Single.fromCallable(() -> {
+            try {
+                //Connect to IMAP server
+                Session emailSession = Session.getInstance(user.getIMAPProperties(),
+                        new Authenticator() {
+                            @Override
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(user.getMail(), user.getPassword());
+                            }
+                        });
+                Store store = emailSession.getStore("imaps");
+                store.connect(user.getHostIMAP(), user.getMail(), user.getPassword());
+
+                //Get folder
+                IMAPFolder folder = (IMAPFolder) store.getFolder(folderName);
+                folder.open(Folder.READ_WRITE);
+
+                Message[] messagesList = folder.getMessagesByUID(uids);
+                for (var message : messagesList) {
+                    message.setFlag(Flags.Flag.DELETED, true);
+                }
+
+                folder.close(true);
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
     // Get headers from messages
     private static MessageHeader[] getHeadersFromMessages(Message[] messages, IMAPFolder folder) {
         List<MessageHeader> headers = new ArrayList<>();

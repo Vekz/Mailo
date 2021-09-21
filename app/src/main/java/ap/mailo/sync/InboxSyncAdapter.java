@@ -88,7 +88,7 @@ public class InboxSyncAdapter extends AbstractThreadedSyncAdapter {
             if(UIDValidity == folderUIDValidity) {
                 Log.d(app.getString(R.string.app_name), TAG + "> Checking for new messages " + folderName);
                 // Get messages in range for new UIDs
-                messages = folder.getMessagesByUID(lastUIDSynced+1, UIDFolder.MAXUID);
+                messages = folder.getMessagesByUID(lastUIDSynced + 1, UIDFolder.MAXUID);
             }
 
             if(messages != null) {

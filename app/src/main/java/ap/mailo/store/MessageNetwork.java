@@ -151,6 +151,8 @@ public class MessageNetwork {
 
                 parts[3] = getText(message);
 
+                store.close();
+
                 return parts;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -222,6 +224,7 @@ public class MessageNetwork {
                 }
 
                 folder.close(true);
+                store.close();
 
                 return true;
             } catch (Exception e) {

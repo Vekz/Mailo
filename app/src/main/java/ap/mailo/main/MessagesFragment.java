@@ -129,6 +129,7 @@ public class MessagesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.messages_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         new ItemTouchHelper(itemDeleteCallback).attachToRecyclerView(recyclerView);
+        recyclerView.addOnScrollListener(visibleItemsChanged);
         recyclerView.setAdapter(adapter);
 
         TextView titleView = view.findViewById(R.id.FolderTitle);
@@ -167,6 +168,7 @@ public class MessagesFragment extends Fragment {
     private class MessageHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView fromTextView;
         private final TextView subjectTextView;
+        private final TextView numberLabelView;
         private long messnr;
 
         public MessageHolder(LayoutInflater layoutInflater, ViewGroup parent) {
@@ -175,6 +177,7 @@ public class MessagesFragment extends Fragment {
 
             fromTextView = itemView.findViewById(R.id.list_item_from);
             subjectTextView = itemView.findViewById(R.id.list_item_Subject);
+            numberLabelView = itemView.findViewById(R.id.list_item_Label);
         }
 
         public void bind(MessageHeader message) {
@@ -259,6 +262,24 @@ public class MessagesFragment extends Fragment {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i){
             removeMessage(messagesList.get(viewHolder.getAdapterPosition()));
+        }
+    };
+
+    RecyclerView.OnScrollListener visibleItemsChanged = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            LinearLayoutManager llm = ((LinearLayoutManager)recyclerView.getLayoutManager());
+            int firstPosition = llm.findFirstVisibleItemPosition();
+            int lastPosition = llm.findLastVisibleItemPosition()+1;
+
+            int count = 1;
+            for(int i = firstPosition; i <= lastPosition; i++) {
+                MessageHolder message = ((MessageHolder) recyclerView.findViewHolderForLayoutPosition(i));
+                if(message != null) {
+                    message.numberLabelView.setText(Integer.toString(count));
+                    count++;
+                }
+            }
         }
     };
 

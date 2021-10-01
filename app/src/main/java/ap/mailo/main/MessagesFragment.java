@@ -1,10 +1,13 @@
 package ap.mailo.main;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.accounts.Account;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -17,12 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -114,6 +120,7 @@ public class MessagesFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+
     }
 
     @Override
@@ -166,6 +173,7 @@ public class MessagesFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
 
         ifMailtoThenRedirectToWriteFragment();
+        ifFirstRunThenShowTutorial();
     }
 
     private class MessageHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -289,6 +297,41 @@ public class MessagesFragment extends Fragment {
             }
         }
     };
+
+    private void ifFirstRunThenShowTutorial() {
+        Boolean isFirstRun = getContext().getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+        if(isFirstRun)
+        {
+            if(showFeatureOnboarding())            {
+                getContext().getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                        .putBoolean("isFirstRun", false).commit();
+            }
+        }
+    }
+
+    private boolean showFeatureOnboarding() {
+        FragmentActivity activity = this.getActivity();
+        if(activity != null) {
+            View fab = activity.findViewById(R.id.fab);
+            Toolbar bottomAppDrawer = activity.findViewById(R.id.bottomAppBar);
+            // Get colorOnPrimary from day/night material theme
+            TypedValue value = new TypedValue();
+            getContext().getTheme().resolveAttribute(R.attr.colorOnPrimary, value, true);
+            if(fab != null && bottomAppDrawer != null) {
+                new TapTargetSequence(activity)
+                        .targets(
+                                TapTarget.forView(fab, "This is Main Button", "PRESS IT to send messages and reply to messages \nHOLD IT to make voice commands")
+                                .textColorInt(value.data),
+                                TapTarget.forToolbarNavigationIcon(bottomAppDrawer, "Here you can find menu drawer", "Use it to navigate between folders in your mailbox")
+                                .textColorInt(value.data)
+                        ).start();
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void ifMailtoThenRedirectToWriteFragment() {
         if(mailto != null) {

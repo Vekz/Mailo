@@ -145,8 +145,10 @@ public class MessageNetwork {
                 parts[2] = "";
 
                 Address[] recipients = message.getRecipients(Message.RecipientType.TO);
-                for(Address ad : recipients) {
-                    parts[2] += decodeText(ad.toString());
+                if(recipients != null) {
+                    for (Address ad : recipients) {
+                        parts[2] += decodeText(ad.toString());
+                    }
                 }
 
                 parts[3] = getText(message);

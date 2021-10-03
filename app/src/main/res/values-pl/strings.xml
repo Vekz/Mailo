@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboardingMainButton_title">To jest Głowny Przycisk</string>
+    <string name="onboardingMainButton_description">NACIŚNIJ GO aby wysyłać wiadomości i odpowiadać na wiadomości \nPRZYTRZYMAJ GO aby wydawać komendy głosowe</string>
+    <string name="onboardingMenuButton_title">Tutaj znajdziesz menu</string>
+    <string name="onboardingMenuButton_description">Użyj go aby nawigować pomiędzy folderami w swojej skrzynce mailowej</string>
+</resources>

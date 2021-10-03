@@ -322,9 +322,9 @@ public class MessagesFragment extends Fragment {
             if(fab != null && bottomAppDrawer != null) {
                 new TapTargetSequence(activity)
                         .targets(
-                                TapTarget.forView(fab, "This is Main Button", "PRESS IT to send messages and reply to messages \nHOLD IT to make voice commands")
+                                TapTarget.forView(fab, getString(R.string.onboardingMainButton_title), getString(R.string.onboardingMainButton_description))
                                 .textColorInt(value.data),
-                                TapTarget.forToolbarNavigationIcon(bottomAppDrawer, "Here you can find menu drawer", "Use it to navigate between folders in your mailbox")
+                                TapTarget.forToolbarNavigationIcon(bottomAppDrawer, getString(R.string.onboardingMenuButton_title), getString(R.string.onboardingMenuButton_description))
                                 .textColorInt(value.data)
                         ).start();
                 return true;

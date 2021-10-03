@@ -1,15 +1,26 @@
 package ap.mailo.main;
 
+import static android.Manifest.permission.RECORD_AUDIO;
+
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -49,6 +60,16 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private BottomAppBar bottomAppBar;
     private FrameLayout scrim;
+
+    // Other views
+    private FloatingActionButton fab;
+
+    // Misc
+    private boolean isLongClickPressed = false;
+    private SpeechRecognizer speechRecognizer;
+    private Intent intentRecognizer;
+    private boolean isSpeechActivated = false;
+    private TextToSpeech textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,14 +149,29 @@ public class MainActivity extends AppCompatActivity {
         navigationView.bringToFront();
 
         populateBottomDrawer();
+
+        // Speech recognition setup
+        textToSpeech = new TextToSpeech(this, initTTSListener);
+
+        intentRecognizer = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intentRecognizer.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        speechRecognizer.setRecognitionListener(speechListener);
+
+        fab = findViewById(R.id.fab);
+        if(fab != null) {
+            ActivityCompat.requestPermissions(this, new String[]{RECORD_AUDIO}, PackageManager.PERMISSION_GRANTED);
+            fab.setOnLongClickListener(speechPressed);
+            fab.setOnTouchListener(speechReleased);
+        }
     }
 
     // Populate bottom drawer
-    void populateBottomDrawer() {
+    private void populateBottomDrawer() {
         if(ACC != null) {
             // Set bottom drawer header with mailbox name and user's email
-            TextView navTitle = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navTitle);
-            TextView navMail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navMail);
+            TextView navTitle = navigationView.getHeaderView(0).findViewById(R.id.navTitle);
+            TextView navMail = navigationView.getHeaderView(0).findViewById(R.id.navMail);
             navTitle.setText(ACC.getShortDisplayName());
             navMail.setText(ACC.getMail());
 
@@ -144,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Asynchronously get mailbox's folder names
-    public static Single<ArrayList<String>> getFolderNames(LoggedInUser ACC) {
+    private static Single<ArrayList<String>> getFolderNames(LoggedInUser ACC) {
         return Single.fromCallable(() -> {
             ArrayList<String> names = new ArrayList<>();
             try {
@@ -173,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Set folder names at bottom drawer
-    void setFolderNames(ArrayList<String> folderNames){
+    private void setFolderNames(ArrayList<String> folderNames){
         final Menu menu = navigationView.getMenu();
         if(folderNames != null) {
             for (int i = 0; i < folderNames.size(); i++) {
@@ -194,4 +230,77 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // FAB - Speech recognition listeners
+    private final TextToSpeech.OnInitListener initTTSListener = new TextToSpeech.OnInitListener() {
+        @Override
+        public void onInit(int i) {
+            isSpeechActivated = true;
+        }
+    };
+
+    private final View.OnLongClickListener speechPressed = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            isLongClickPressed = true;
+            // Start listening
+            speechRecognizer.startListening(intentRecognizer);
+            return true;
+        }
+    };
+
+    private final View.OnTouchListener speechReleased = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            view.onTouchEvent(motionEvent);
+            // We're only interested in when the button is released.
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                // We're only interested in anything if our speech button is currently pressed.
+                if (isLongClickPressed) {
+                    isLongClickPressed = false;
+                    // Stop listening
+                    speechRecognizer.stopListening();
+                }
+            }
+            return true;
+        }
+    };
+
+    private final RecognitionListener speechListener = new RecognitionListener() {
+        @Override
+        public void onResults(Bundle bundle) {
+            String result = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).toString();
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(int i) {
+            // Text-To-Speech "Sorry I did not understand you"
+            if(isSpeechActivated){
+                textToSpeech.speak(getString(R.string.speechError), TextToSpeech.QUEUE_FLUSH, null, "");
+            }else {
+                Toast.makeText(getApplicationContext(), getString(R.string.speechError), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onReadyForSpeech(Bundle bundle) { }
+
+        @Override
+        public void onBeginningOfSpeech() { }
+
+        @Override
+        public void onRmsChanged(float v) { }
+
+        @Override
+        public void onBufferReceived(byte[] bytes) { }
+
+        @Override
+        public void onEndOfSpeech() { }
+
+        @Override
+        public void onPartialResults(Bundle bundle) { }
+
+        @Override
+        public void onEvent(int i, Bundle bundle) { }
+    };
 }

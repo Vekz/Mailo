@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_username">Niepoprawna nazwa użytkownika!</string>
+    <string name="invalid_password">Hasło nie może być puste!</string>
+    <string name="prompt_password">Hasło</string>
+    <string name="action_sign_in_short">Zaloguj</string>
+    <string name="prompt_email">Adres email</string>
+    <string name="action_sign_in">Zaloguj</string>
+    <string name="welcome">Witaj</string>
+    <string name="login_failed">Złe dane</string>
+    <string name="title_activity_authenticator">Login</string>
+    <string name="main_button_description">Kliknij aby utworzyć wiadomość lub przytrzymaj aby użyć komend głosowych</string>
+    <string name="nav_header_title">Mailo</string>
+    <string name="nav_header_subtitle">nieznany użytkownik - error</string>
+    <string name="FolderName">DOMYŚLNY</string>
+    <string name="placeholder_text">Lorem ipsum</string>
+    <string name="syncMessPrefs">syncmessprefs</string>
+    <string name="channel_name">Mailo</string>
+    <string name="channel_description">Nowa wiadomość</string>
+    <string name="readBodyDefault">Tutaj nic nie ma</string>
+    <string name="readSubjectDefault">\t\t Brak tematu</string>
+    <string name="readFromDefault">Brak nadawcy</string>
+    <string name="readToDefault">Brak adresata</string>
+    <string name="writeTo">Do</string>
+    <string name="writeSubject">Temat</string>
+    <string name="writeContent">Tutaj wprowadź treść wiadomości...</string>
+    <string name="go_back">Wróć</string>
+    <string name="comma_separation">Adresaci powinni być rozdzieleni przecinkiem!</string>
+    <string name="empty_recipient">Podano niepoprawne informacje</string>
+    <string name="succes_sending">Wysłano wiadomość!</string>
+    <string name="failure_sending">Nie udalo się wysłać wiadomości. Spróbuj ponownie!</string>
+    <string name="noTitle">Brak tytułu</string>
+    <string name="speechError">Przepraszam, nie rozumiem</string>
+</resources>

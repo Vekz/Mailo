@@ -276,9 +276,9 @@ public class MainActivity extends AppCompatActivity {
         public void onError(int i) {
             // Text-To-Speech "Sorry I did not understand you"
             if(isSpeechActivated){
-                textToSpeech.speak("Sorry, I did not understand you", TextToSpeech.QUEUE_FLUSH, null, "");
+                textToSpeech.speak(getString(R.string.speechError), TextToSpeech.QUEUE_FLUSH, null, "");
             }else {
-                Toast.makeText(getApplicationContext(), "Sorry, I did not understand you", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.speechError), Toast.LENGTH_SHORT).show();
             }
         }
 

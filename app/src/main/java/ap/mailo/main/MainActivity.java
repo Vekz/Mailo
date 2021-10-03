@@ -33,6 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.math.MathUtils;
 import com.google.android.material.navigation.NavigationView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import ap.mailo.R;
@@ -270,16 +271,12 @@ public class MainActivity extends AppCompatActivity {
         public void onResults(Bundle bundle) {
             String result = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).toString();
             Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+            handleRecognitionResults(result);
         }
 
         @Override
         public void onError(int i) {
-            // Text-To-Speech "Sorry I did not understand you"
-            if(isSpeechActivated){
-                textToSpeech.speak(getString(R.string.speechError), TextToSpeech.QUEUE_FLUSH, null, "");
-            }else {
-                Toast.makeText(getApplicationContext(), getString(R.string.speechError), Toast.LENGTH_SHORT).show();
-            }
+            handleRecognitionError();
         }
 
         @Override
@@ -303,4 +300,93 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onEvent(int i, Bundle bundle) { }
     };
+
+    private void handleRecognitionError() {
+        // Text-To-Speech "Sorry I did not understand you"
+        if(isSpeechActivated){
+            textToSpeech.speak(getString(R.string.speechError), TextToSpeech.QUEUE_FLUSH, null, "");
+        }else {
+            Toast.makeText(getApplicationContext(), getString(R.string.speechError), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleRecognitionResults(String result) {
+        switch(result){
+            case result.startsWith("Open message"):
+                String[] resultSplit = result.split(" ");
+                if(resultSplit.length == 3) {
+                    String messNumber = resultSplit[2];
+                    int index = stringToInt(messNumber);
+                    // Open message with that index
+                    if(index != -1) {
+
+                    }
+                    break;
+                }
+                handleRecognitionError();
+                break;
+            case result.startsWith("Open"):
+                String[] resultSplit = result.split(" ");
+                if(resultSplit.length == 2) {
+                    String folderName = resultSplit[1];
+                    // Open appropriate folder
+                    break;
+                }
+                handleRecognitionError();
+                break;
+            case result.startsWith("Reply to message"):
+                String[] resultSplit = result.split(" ");
+                if(resultSplit.length == 4) {
+                    String messNumber = resultSplit[3];
+                    int index = stringToInt(messNumber);
+                    // Reply to message with that index
+                    if(index != -1) {
+
+                    }
+                    break;
+                }
+                break;
+            case result.equalsIgnoreCase("Reply"):
+                // Reply to this message (if in correct view)
+                break;
+            case result.equalsIgnoreCase("Write message"):
+                // Start composing new message
+                break;
+            case result.equalsIgnoreCase("Send"):
+                // Send this message (if in correct view)
+                break;
+            case result.equalsIgnoreCase("Go back"):
+                // Move to previous fragment on stack
+                break;
+            default:
+                handleRecognitionError();
+                break;
+        }
+    }
+
+    private int stringToInt(String toParse) {
+        switch(toParse) {
+            case toParse.equalsIgnoreCase("One") || toParse.equals("1"):
+                return 1;
+            case toParse.equalsIgnoreCase("Two") || toParse.equals("2"):
+                return 2;
+            case toParse.equalsIgnoreCase("Three") || toParse.equals("3"):
+                return 3;
+            case toParse.equalsIgnoreCase("Four") || toParse.equals("4"):
+                return 4;
+            case toParse.equalsIgnoreCase("Five") || toParse.equals("5"):
+                return 5;
+            case toParse.equalsIgnoreCase("Six") || toParse.equals("6"):
+                return 6;
+            case toParse.equalsIgnoreCase("Seven") || toParse.equals("7"):
+                return 7;
+            case toParse.equalsIgnoreCase("Eight") || toParse.equals("8"):
+                return 8;
+            case toParse.equalsIgnoreCase("Nine") || toParse.equals("9"):
+                return 9;
+            default:
+                handleRecognitionError();
+                return -1;
+        }
+    }
 }

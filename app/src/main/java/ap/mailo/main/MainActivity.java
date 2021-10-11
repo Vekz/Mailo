@@ -12,6 +12,7 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,8 +23,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
@@ -55,12 +58,14 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_FolderList = "folderList";
 
     private LoggedInUser ACC;
+    private String folderName;
 
     // Navigation variables
     private NavigationView navigationView;
     private NavController navController;
     private BottomAppBar bottomAppBar;
     private FrameLayout scrim;
+    private BottomSheetBehavior<NavigationView> bottomSheetBehavior;
 
     // Other views
     private FloatingActionButton fab;
@@ -72,13 +77,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSpeechActivated = false;
     private TextToSpeech textToSpeech;
 
+    private static ArrayList<String> folderNames;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Get attributes passed from EntryActivity
-        String folderName = getIntent().getStringExtra(KEY_FolderName);
+        folderName = getIntent().getStringExtra(KEY_FolderName);
         ACC = getIntent().getParcelableExtra(LoggedInUser.ACCOUNT_INFO);
         String mailto = getIntent().getStringExtra(WriteMessage.MAILTO_STRING);
 
@@ -91,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup Bottom App Bar and bottom drawer behaviour
         setSupportActionBar(bottomAppBar);
-        BottomSheetBehavior<NavigationView> bottomSheetBehavior = BottomSheetBehavior.from(navigationView);
+        bottomSheetBehavior = BottomSheetBehavior.from(navigationView);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         scrim.setVisibility(View.GONE);
 
@@ -131,22 +138,7 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString(WriteMessage.MAILTO_STRING, mailto);
         navController.setGraph(R.navigation.nav_graph, bundle);
 
-        navigationView.setNavigationItemSelectedListener(item -> {
-            navigationView.getMenu().getItem(item.getItemId()).setChecked(true);
-            String folderName1 = item.getTitle().toString();
-
-            Log.d(getString(R.string.app_name), TAG + "> selected " + folderName1);
-
-            Bundle bundle1 = new Bundle();
-            bundle1.putParcelable(KEY_Acc, ACC);
-            bundle1.putString(KEY_FolderName, folderName1);
-            navController.popBackStack(R.id.messagesFragment, true);
-            navController.navigate(R.id.messagesFragment, bundle1);
-
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            scrim.setVisibility(View.GONE);
-            return true;
-        });
+        navigationView.setNavigationItemSelectedListener(this::moveToFolder);
         navigationView.bringToFront();
 
         populateBottomDrawer();
@@ -183,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     // Asynchronously get mailbox's folder names
     private static Single<ArrayList<String>> getFolderNames(LoggedInUser ACC) {
         return Single.fromCallable(() -> {
-            ArrayList<String> names = new ArrayList<>();
+            folderNames = new ArrayList<>();
             try {
                 Session emailSession = Session.getInstance(ACC.getIMAPProperties(),
                         new jakarta.mail.Authenticator() {
@@ -199,13 +191,13 @@ public class MainActivity extends AppCompatActivity {
                 Folder[] folders = store.getDefaultFolder().listSubscribed();
 
                 for (Folder folder : folders) {
-                    names.add(folder.getName());
+                    folderNames.add(folder.getName());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            return names;
+            return folderNames;
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -229,6 +221,25 @@ public class MainActivity extends AppCompatActivity {
                 menuItem.setChecked(true);
             }
         }
+    }
+
+    // Move to a folder
+    public boolean moveToFolder(MenuItem item)
+    {
+        navigationView.getMenu().getItem(item.getItemId()).setChecked(true);
+        folderName = item.getTitle().toString();
+
+        Log.d(getString(R.string.app_name), TAG + "> selected " + folderName);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(KEY_Acc, ACC);
+        bundle.putString(KEY_FolderName, folderName);
+        navController.popBackStack(R.id.messagesFragment, true);
+        navController.navigate(R.id.messagesFragment, bundle);
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        scrim.setVisibility(View.GONE);
+        return true;
     }
 
     // FAB - Speech recognition listeners
@@ -270,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onResults(Bundle bundle) {
             String result = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).toString();
+            result = result.substring(1, result.length()-1);
             Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
             handleRecognitionResults(result);
         }
@@ -310,83 +322,119 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Voice commands
     private void handleRecognitionResults(String result) {
-        switch(result){
-            case result.startsWith("Open message"):
-                String[] resultSplit = result.split(" ");
-                if(resultSplit.length == 3) {
-                    String messNumber = resultSplit[2];
-                    int index = stringToInt(messNumber);
-                    // Open message with that index
-                    if(index != -1) {
+        if(result.startsWith(getString(R.string.COMM_OpenNo))) {
+            String[] resultSplit = result.split(" ");
+            if (resultSplit.length == 3) {
+                String messNumber = resultSplit[2];
+                int index = stringToInt(messNumber);
+                // Open message with that index
+                if (index != -1) {
+                    var fragment = getForegroundFragment();
+                    if(fragment.getClass().getName().equals(MessagesFragment.class.getName())) {
 
                     }
-                    break;
                 }
-                handleRecognitionError();
-                break;
-            case result.startsWith("Open"):
-                String[] resultSplit = result.split(" ");
-                if(resultSplit.length == 2) {
-                    String folderName = resultSplit[1];
-                    // Open appropriate folder
-                    break;
-                }
-                handleRecognitionError();
-                break;
-            case result.startsWith("Reply to message"):
-                String[] resultSplit = result.split(" ");
-                if(resultSplit.length == 4) {
-                    String messNumber = resultSplit[3];
-                    int index = stringToInt(messNumber);
-                    // Reply to message with that index
-                    if(index != -1) {
-
-                    }
-                    break;
-                }
-                break;
-            case result.equalsIgnoreCase("Reply"):
-                // Reply to this message (if in correct view)
-                break;
-            case result.equalsIgnoreCase("Write message"):
-                // Start composing new message
-                break;
-            case result.equalsIgnoreCase("Send"):
-                // Send this message (if in correct view)
-                break;
-            case result.equalsIgnoreCase("Go back"):
-                // Move to previous fragment on stack
-                break;
-            default:
-                handleRecognitionError();
-                break;
+                return;
+            }
         }
+        if(result.startsWith(getString(R.string.COMM_Open))) {
+            String[] resultSplit = result.split(" ");
+            if (resultSplit.length == 2) {
+                String folderName = resultSplit[1];
+                if(folderNames.contains(folderName)) {
+                    // Open appropriate folder
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(KEY_Acc, ACC);
+                    bundle.putString(KEY_FolderName, folderName);
+                    navController.navigate(R.id.messagesFragment, bundle);
+                    return;
+                }
+            }
+        }
+        if(result.startsWith(getString(R.string.COMM_ReplyNo))) {
+            String[] resultSplit = result.split(" ");
+            if (resultSplit.length == 4) {
+                String messNumber = resultSplit[3];
+                int index = stringToInt(messNumber);
+                // Reply to message with that index
+                if (index != -1) {
+                    var fragment = getForegroundFragment();
+                    if(fragment.getClass().getName().equals(MessagesFragment.class.getName())) {
+
+                    }
+                }
+                return;
+            }
+        }
+        if(result.equalsIgnoreCase(getString(R.string.COMM_Reply)))
+        {
+            // Reply to this message
+            var fragment = getForegroundFragment();
+            if(fragment.getClass().getName().equals(ReadMessage.class.getName()))
+            {
+                var readFragment = (ReadMessage)fragment;
+                readFragment.reply();
+                return;
+            }
+        }
+        if(result.equalsIgnoreCase(getString(R.string.COMM_Send)))
+        {
+            // Send this message
+            var fragment = getForegroundFragment();
+            if(fragment.getClass().getName().equals(WriteMessage.class.getName()))
+            {
+                var writeFragment = (WriteMessage)fragment;
+                writeFragment.sendMessage();
+                return;
+            }
+        }
+        if(result.equalsIgnoreCase(getString(R.string.COMM_NewMessage))) {
+            // Start composing new message
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+            bundle.putString(MainActivity.KEY_FolderName, folderName);
+            navController.navigate(R.id.writeMessage, bundle);
+            return;
+        }
+        if(result.equalsIgnoreCase(getString(R.string.COMM_GoBack))) {
+            // Move to previous fragment on stack
+            if(!folderName.equalsIgnoreCase(getString(R.string.defaultFolder)))
+                navController.popBackStack();
+            return;
+        }
+
+        handleRecognitionError();
     }
 
     private int stringToInt(String toParse) {
-        switch(toParse) {
-            case toParse.equalsIgnoreCase("One") || toParse.equals("1"):
+
+            if(toParse.equalsIgnoreCase(getString(R.string.Numeral1)) || toParse.equals("1"))
                 return 1;
-            case toParse.equalsIgnoreCase("Two") || toParse.equals("2"):
+            if(toParse.equalsIgnoreCase(getString(R.string.Numeral2)) || toParse.equals("2"))
                 return 2;
-            case toParse.equalsIgnoreCase("Three") || toParse.equals("3"):
+            if(toParse.equalsIgnoreCase(getString(R.string.Numeral3)) || toParse.equals("3"))
                 return 3;
-            case toParse.equalsIgnoreCase("Four") || toParse.equals("4"):
+            if(toParse.equalsIgnoreCase(getString(R.string.Numeral4)) || toParse.equals("4"))
                 return 4;
-            case toParse.equalsIgnoreCase("Five") || toParse.equals("5"):
+            if(toParse.equalsIgnoreCase(getString(R.string.Numeral5)) || toParse.equals("5"))
                 return 5;
-            case toParse.equalsIgnoreCase("Six") || toParse.equals("6"):
+            if(toParse.equalsIgnoreCase(getString(R.string.Numeral6)) || toParse.equals("6"))
                 return 6;
-            case toParse.equalsIgnoreCase("Seven") || toParse.equals("7"):
+            if(toParse.equalsIgnoreCase(getString(R.string.Numeral7)) || toParse.equals("7"))
                 return 7;
-            case toParse.equalsIgnoreCase("Eight") || toParse.equals("8"):
+            if(toParse.equalsIgnoreCase(getString(R.string.Numeral8)) || toParse.equals("8"))
                 return 8;
-            case toParse.equalsIgnoreCase("Nine") || toParse.equals("9"):
+            if(toParse.equalsIgnoreCase(getString(R.string.Numeral9)) || toParse.equals("9"))
                 return 9;
-            default:
-                handleRecognitionError();
-                return -1;
-        }
+
+            handleRecognitionError();
+            return -1;
+    }
+
+    private Fragment getForegroundFragment(){
+        Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        return navHostFragment == null ? null : navHostFragment.getChildFragmentManager().getFragments().get(0);
     }
 }

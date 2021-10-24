@@ -1,73 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginBottom="?attr/actionBarSize"
     tools:context=".main.WriteMessage">
 
-    <LinearLayout
-        android:id="@+id/subject"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:contentDescription="@string/go_back"
-            android:src="@drawable/ic_back_arrow"/>
-
-        <EditText
-            android:id="@+id/writeSubject"
-            android:layout_width="331dp"
-            android:layout_height="69dp"
-            android:hint="@string/writeSubject"
-            android:inputType="textCapSentences|textAutoCorrect|textEmailSubject"
-            android:paddingHorizontal="@dimen/padding_sides"
-            android:textSize="@dimen/H4"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/toMail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/subject"
-        android:orientation="horizontal">
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:text="@string/writeTo"
-            android:textAlignment="center"
-            android:textSize="@dimen/H5"/>
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/writeTo"
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:contentDescription="@string/go_back"
+                android:src="@drawable/ic_back_arrow" />
+
+            <EditText
+                android:id="@+id/writeSubject"
+                android:layout_width="331dp"
+                android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
+                android:hint="@string/writeSubject"
+                android:inputType="textCapSentences|textAutoCorrect|textEmailSubject"
+                android:maxHeight="240dp"
+                android:minHeight="80dp"
+                android:paddingHorizontal="@dimen/padding_sides"
+                android:textSize="@dimen/H4" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/toMail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_below="@id/subject"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:text="@string/writeTo"
+                android:textAlignment="center"
+                android:textSize="@dimen/H5" />
+
+            <EditText
+                android:id="@+id/writeTo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="@dimen/padding_sides"
+                android:textSize="@dimen/H5" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/writeContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toMail"
+            android:hint="@string/writeContent"
+            android:inputType="text|textLongMessage|textAutoComplete|textCapSentences|textAutoCorrect|textMultiLine"
             android:paddingHorizontal="@dimen/padding_sides"
-            android:textSize="@dimen/H5"
-            android:inputType="textEmailAddress" />
-    </LinearLayout>
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
+            android:textSize="@dimen/Regular" />
 
-    <EditText
-        android:id="@+id/writeContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toMail"
-        android:hint="@string/writeContent"
-        android:inputType="text|textLongMessage|textAutoComplete|textCapSentences|textAutoCorrect|textMultiLine"
-        android:paddingHorizontal="@dimen/padding_sides"
-        android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:textSize="@dimen/Regular" />
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

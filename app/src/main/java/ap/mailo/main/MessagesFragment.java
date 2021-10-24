@@ -1,10 +1,13 @@
 package ap.mailo.main;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.accounts.Account;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -17,12 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -104,13 +110,17 @@ public class MessagesFragment extends Fragment {
                 if(messagesList.size() > 0){
                     messagesList.clear();
                 }
+
                 if(messageHeaders != null){
                     messagesList.addAll(messageHeaders);
+                    adapter.setMessages(messagesList);
                 }
+
                 swipeRefreshLayout.setRefreshing(false);
                 adapter.notifyDataSetChanged();
             }
         });
+
     }
 
     @Override
@@ -129,6 +139,7 @@ public class MessagesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.messages_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         new ItemTouchHelper(itemDeleteCallback).attachToRecyclerView(recyclerView);
+        recyclerView.addOnScrollListener(visibleItemsChanged);
         recyclerView.setAdapter(adapter);
 
         TextView titleView = view.findViewById(R.id.FolderTitle);
@@ -162,11 +173,13 @@ public class MessagesFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
 
         ifMailtoThenRedirectToWriteFragment();
+        ifFirstRunThenShowTutorial();
     }
 
     private class MessageHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView fromTextView;
         private final TextView subjectTextView;
+        private final TextView numberLabelView;
         private long messnr;
 
         public MessageHolder(LayoutInflater layoutInflater, ViewGroup parent) {
@@ -175,6 +188,7 @@ public class MessagesFragment extends Fragment {
 
             fromTextView = itemView.findViewById(R.id.list_item_from);
             subjectTextView = itemView.findViewById(R.id.list_item_Subject);
+            numberLabelView = itemView.findViewById(R.id.list_item_Label);
         }
 
         public void bind(MessageHeader message) {
@@ -243,9 +257,10 @@ public class MessagesFragment extends Fragment {
         }
     }
 
-    private void removeMessage(MessageHeader mess) {
+    private void removeMessage(int position) {
+        MessageHeader mess = messagesList.get(position);
         messagesList.remove(mess);
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemRemoved(position);
 
         inboxVM.deleteFromFolderByUIDs(ACC, new long[] {mess.getUID()}, folderName);
     }
@@ -258,9 +273,65 @@ public class MessagesFragment extends Fragment {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i){
-            removeMessage(messagesList.get(viewHolder.getAdapterPosition()));
+            removeMessage(viewHolder.getAdapterPosition());
         }
     };
+
+    RecyclerView.OnScrollListener visibleItemsChanged = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            LinearLayoutManager llm = ((LinearLayoutManager)recyclerView.getLayoutManager());
+
+            if(llm != null) {
+                int firstPosition = llm.findFirstVisibleItemPosition();
+                int lastPosition = llm.findLastVisibleItemPosition() + 2;
+
+                int count = 1;
+                for (int i = firstPosition; i <= lastPosition; i++) {
+                    MessageHolder message = ((MessageHolder) recyclerView.findViewHolderForLayoutPosition(i));
+                    if (message != null) {
+                        message.numberLabelView.setText(Integer.toString(count));
+                        count++;
+                    }
+                }
+            }
+        }
+    };
+
+    private void ifFirstRunThenShowTutorial() {
+        Boolean isFirstRun = getContext().getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+        if(isFirstRun)
+        {
+            if(showFeatureOnboarding())            {
+                getContext().getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                        .putBoolean("isFirstRun", false).commit();
+            }
+        }
+    }
+
+    private boolean showFeatureOnboarding() {
+        FragmentActivity activity = this.getActivity();
+        if(activity != null) {
+            View fab = activity.findViewById(R.id.fab);
+            Toolbar bottomAppDrawer = activity.findViewById(R.id.bottomAppBar);
+            // Get colorOnPrimary from day/night material theme
+            TypedValue value = new TypedValue();
+            getContext().getTheme().resolveAttribute(R.attr.colorOnPrimary, value, true);
+            if(fab != null && bottomAppDrawer != null) {
+                new TapTargetSequence(activity)
+                        .targets(
+                                TapTarget.forView(fab, getString(R.string.onboardingMainButton_title), getString(R.string.onboardingMainButton_description))
+                                .textColorInt(value.data),
+                                TapTarget.forToolbarNavigationIcon(bottomAppDrawer, getString(R.string.onboardingMenuButton_title), getString(R.string.onboardingMenuButton_description))
+                                .textColorInt(value.data)
+                        ).start();
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void ifMailtoThenRedirectToWriteFragment() {
         if(mailto != null) {

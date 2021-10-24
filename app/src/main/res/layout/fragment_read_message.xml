@@ -1,76 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="?attr/actionBarSize"
     tools:context=".main.ReadMessage">
 
-    <ImageView
-        android:layout_marginTop="17dp"
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_back_arrow"
-        android:contentDescription="@string/go_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/readSubject"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:id="@+id/readSubject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/H2"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="64dp"
-        tools:layout_editor_absoluteY="78dp"
-        android:paddingVertical="@dimen/read_subject_padding"
-        android:paddingHorizontal="@dimen/padding_sides"
-        android:text="@string/readSubjectDefault"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/readFrom"/>
-
-    <TextView
-        android:id="@+id/readFrom"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/Small"
-        tools:layout_editor_absoluteX="64dp"
-        tools:layout_editor_absoluteY="78dp"
-        android:paddingHorizontal="@dimen/padding_sides"
-        android:text = "@string/readFromDefault"
-        app:layout_constraintTop_toBottomOf="@id/readSubject"
-        app:layout_constraintBottom_toTopOf="@id/readTo"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/readTo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/Regular"
-        tools:layout_editor_absoluteX="64dp"
-        tools:layout_editor_absoluteY="78dp"
-        android:paddingHorizontal="@dimen/padding_sides"
-        android:text = "@string/readToDefault"
-        app:layout_constraintTop_toBottomOf="@id/readSubject"
-        app:layout_constraintBottom_toTopOf="@id/readBody"/>
+        <LinearLayout
+           android:id="@+id/readTopLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/padding_sides"
+            android:paddingVertical="@dimen/read_subject_padding"
+            android:orientation="horizontal">
 
-    <WebView
-        android:id="@+id/readBody"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:textSize="@dimen/Small"
-        tools:layout_editor_absoluteX="64dp"
-        tools:layout_editor_absoluteY="78dp"
-        android:paddingVertical="@dimen/read_content_padding"
-        android:paddingHorizontal="@dimen/padding_sides"
-        android:text = "@string/readBodyDefault"
-        app:layout_constraintTop_toBottomOf="@id/readTo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="?attr/actionBarSize"/>
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:contentDescription="@string/go_back"
+                android:src="@drawable/ic_back_arrow" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/readSubject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="80dp"
+                android:maxHeight="240dp"
+                android:autoSizeTextType="uniform"
+                android:text="@string/readSubjectDefault"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/readFrom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/Small"
+            tools:layout_editor_absoluteX="64dp"
+            tools:layout_editor_absoluteY="78dp"
+            android:paddingHorizontal="@dimen/padding_sides"
+            android:text = "@string/readFromDefault"
+            app:layout_constraintTop_toBottomOf="@id/readTopLine"
+            app:layout_constraintBottom_toTopOf="@id/readTo"/>
+
+        <TextView
+            android:id="@+id/readTo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/Regular"
+            tools:layout_editor_absoluteX="64dp"
+            tools:layout_editor_absoluteY="78dp"
+            android:paddingHorizontal="@dimen/padding_sides"
+            android:text = "@string/readToDefault"
+            app:layout_constraintTop_toBottomOf="@id/readSubject"
+            app:layout_constraintBottom_toTopOf="@id/readBody"/>
+
+        <WebView
+            android:id="@+id/readBody"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/Small"
+            tools:layout_editor_absoluteX="64dp"
+            tools:layout_editor_absoluteY="78dp"
+            android:paddingVertical="@dimen/read_content_padding"
+            android:paddingHorizontal="@dimen/padding_sides"
+            android:text = "@string/readBodyDefault"
+            app:layout_constraintTop_toBottomOf="@id/readTo"
+            android:layout_marginBottom="?attr/actionBarSize"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

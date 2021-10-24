@@ -31,4 +31,8 @@
     <string name="failure_sending">Failed sending a message. Try again later!</string>
     <string name="noTitle">No title</string>
     <string name="speechError">Sorry, I did not understand you</string>
+    <string name="onboardingMainButton_title">This is Main Button</string>
+    <string name="onboardingMainButton_description">PRESS IT to send messages and reply to messages \nHOLD IT to make voice commands</string>
+    <string name="onboardingMenuButton_title">Here you can find menu drawer</string>
+    <string name="onboardingMenuButton_description">Use it to navigate between folders in your mailbox</string>
 </resources>

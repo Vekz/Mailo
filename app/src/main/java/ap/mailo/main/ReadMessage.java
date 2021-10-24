@@ -1,6 +1,7 @@
 package ap.mailo.main;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -19,6 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import ap.mailo.R;
 import ap.mailo.auth.LoggedInUser;
+import ap.mailo.store.InboxViewModel;
+import ap.mailo.store.InboxViewModelFactory;
 import ap.mailo.store.MessageNetwork;
 
 /**
@@ -117,17 +121,26 @@ public class ReadMessage extends Fragment {
             FloatingActionButton fab = activity.findViewById(R.id.fab);
             fab.setImageResource(R.drawable.ic_baseline_reply_24);
             fab.setEnabled(true);
-            fab.setOnClickListener(v -> {
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(MainActivity.KEY_Acc, ACC);
-                bundle.putString(MainActivity.KEY_FolderName, folderName);
-                bundle.putString(WriteMessage.MAILTO_STRING, mailtoReply);
-                navController.navigate(R.id.writeMessage, bundle);
-            });
+            fab.setOnClickListener(v -> { reply(); });
         }
 
         contentView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+    }
+
+    public void delete()
+    {
+        var inboxVM = new ViewModelProvider(this, new InboxViewModelFactory(getActivity().getApplication(), folderName, ACC)).get(InboxViewModel.class);
+        inboxVM.deleteFromFolderByUIDs(ACC, new long[] {messnr}, folderName);
+        navController.popBackStack();
+    }
+
+    public void reply()
+    {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+        bundle.putString(MainActivity.KEY_FolderName, folderName);
+        bundle.putString(WriteMessage.MAILTO_STRING, mailtoReply);
+        navController.navigate(R.id.writeMessage, bundle);
     }
 
     private void loadMessage(){
@@ -149,8 +162,14 @@ public class ReadMessage extends Fragment {
         toView.setText(to);
         contentView.loadDataWithBaseURL(null, content, "text/html", null, null);
 
-        String replyFrom = from
-                            .replaceAll("\\<(.*?)\\>", "");
+        var startIndex = from.indexOf("<");
+        var endIndex = from.indexOf(">");
+
+        String replyFrom = from;
+        if(!(startIndex == -1 || endIndex == -1)) {
+            replyFrom = from.substring(startIndex + 1, endIndex);
+        }
+
         String replyBody = "\r\n\r\n\r\n" + content
                             .replaceAll("\\<.*?\\>", "")
                             .replaceAll("(?m)^", "\t\t> ");

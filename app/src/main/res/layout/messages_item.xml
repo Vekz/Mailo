@@ -23,11 +23,12 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:text="@string/placeholder_text"
-        android:textSize="@dimen/H2" />
+        android:textSize="@dimen/H2"
+        android:layout_gravity="center_vertical"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
     <TextView
@@ -37,7 +38,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:textSize="@dimen/Small"
-        android:text="@string/placeholder_text"/>
+        android:text="@string/long_placeholder_text"/>
 
     <TextView
         android:id="@+id/list_item_Subject"
@@ -47,15 +48,15 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:textSize="@dimen/Regular"
         android:textColor="@color/black"
+        android:maxLength="25"
         android:text="@string/placeholder_text"/>
 
+    </LinearLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:background="?android:attr/listDivider" />
-
-    </LinearLayout>
 
 </LinearLayout>

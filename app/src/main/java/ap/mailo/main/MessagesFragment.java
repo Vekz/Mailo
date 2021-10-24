@@ -192,11 +192,15 @@ public class MessagesFragment extends Fragment {
         }
 
         public void bind(MessageHeader message) {
+            String fromText = null;
             try{
-                fromTextView.setText(decodeText(message.getFrom()));
+                fromText = decodeText(message.getFrom());
             }catch (UnsupportedEncodingException e) {
-                fromTextView.setText(message.getFrom());
+                fromText = message.getFrom();
             }
+            fromText = fromText.replaceFirst("<", "\n<");
+            fromTextView.setText(fromText);
+
             String subject = message.getSubject();
             if(subject != null && !subject.isEmpty())
                 subjectTextView.setText(message.getSubject());
@@ -208,15 +212,7 @@ public class MessagesFragment extends Fragment {
         @Override
         public void onClick(View view) {
             Log.d(getString(R.string.app_name), TAG + "> Clicked message" + messnr);
-            InternetChecker.hasInternetConnection().subscribe(has -> {
-                if (has) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(MainActivity.KEY_Acc, ACC);
-                    bundle.putString(MainActivity.KEY_FolderName, folderName);
-                    bundle.putLong(ReadMessage.ARG_MESS_NR, messnr);
-                    navController.navigate(R.id.readMessage, bundle);
-                }
-            });
+            ifHasInternetConnectionOpenMessage(messnr);
         }
     }
 
@@ -257,6 +253,18 @@ public class MessagesFragment extends Fragment {
         }
     }
 
+    private void ifHasInternetConnectionOpenMessage(long messnr) {
+        InternetChecker.hasInternetConnection().subscribe(has -> {
+            if (has) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+                bundle.putString(MainActivity.KEY_FolderName, folderName);
+                bundle.putLong(ReadMessage.ARG_MESS_NR, messnr);
+                navController.navigate(R.id.readMessage, bundle);
+            }
+        });
+    }
+
     private void removeMessage(int position) {
         MessageHeader mess = messagesList.get(position);
         messagesList.remove(mess);
@@ -284,7 +292,7 @@ public class MessagesFragment extends Fragment {
 
             if(llm != null) {
                 int firstPosition = llm.findFirstVisibleItemPosition();
-                int lastPosition = llm.findLastVisibleItemPosition() + 2;
+                int lastPosition = llm.findLastVisibleItemPosition();
 
                 int count = 1;
                 for (int i = firstPosition; i <= lastPosition; i++) {
@@ -297,6 +305,34 @@ public class MessagesFragment extends Fragment {
             }
         }
     };
+
+    public void openMessageAt(int position)
+    {
+        LinearLayoutManager llm = ((LinearLayoutManager)recyclerView.getLayoutManager());
+
+        if(llm != null) {
+            int firstPosition = llm.findFirstVisibleItemPosition();
+            int lastPosition = llm.findLastVisibleItemPosition();
+
+            int viewHolderPosition = position + firstPosition - 1; // -1 Because count starts at 1
+            MessageHolder message = ((MessageHolder) recyclerView.findViewHolderForLayoutPosition(viewHolderPosition));
+            if(message != null) ifHasInternetConnectionOpenMessage(message.messnr);
+        }
+    }
+
+    public void deleteMessageAt(int position) {
+
+        LinearLayoutManager llm = ((LinearLayoutManager)recyclerView.getLayoutManager());
+
+        if(llm != null) {
+            int firstPosition = llm.findFirstVisibleItemPosition();
+            int lastPosition = llm.findLastVisibleItemPosition();
+
+            int viewHolderPosition = position + firstPosition - 1; // -1 Because count starts at 1
+            MessageHolder message = ((MessageHolder) recyclerView.findViewHolderForLayoutPosition(viewHolderPosition));
+            if(message != null) removeMessage(message.getAdapterPosition());
+        }
+    }
 
     private void ifFirstRunThenShowTutorial() {
         Boolean isFirstRun = getContext().getSharedPreferences("PREFERENCE", MODE_PRIVATE)

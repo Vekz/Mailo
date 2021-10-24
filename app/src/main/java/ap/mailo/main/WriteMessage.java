@@ -89,7 +89,6 @@ public class WriteMessage extends Fragment {
         NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
-
         recipients = null;
         subject = "";
         content = "";
@@ -120,13 +119,8 @@ public class WriteMessage extends Fragment {
         if(activity != null) {
             fab = activity.findViewById(R.id.fab);
             fab.setImageResource(R.drawable.ic_baseline_send_24);
-            fab.setEnabled(false);
             fab.setOnClickListener(v -> {
-                if (recipients == null) {
-                    Toast.makeText(activity.getApplicationContext(), getString(R.string.empty_recipient), Toast.LENGTH_SHORT).show();
-                } else {
                     sendMessage();
-                }
             });
         }
 
@@ -185,19 +179,22 @@ public class WriteMessage extends Fragment {
 
     }
 
-    private void sendMessage() {
-
-        MessageNetwork.sendMessage(this.ACC, this.recipients, this.subject, this.content).subscribe(send -> {
-            if (send) {
-                Toast.makeText(getContext(), getString(R.string.succes_sending), Toast.LENGTH_SHORT).show();
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(MainActivity.KEY_Acc, ACC);
-                bundle.putString(MainActivity.KEY_FolderName, folderName);
-                navController.navigate(R.id.messagesFragment, bundle);
-            } else {
-                Toast.makeText(getContext(), getString(R.string.failure_sending), Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void sendMessage() {
+        if (recipients == null) {
+            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.empty_recipient), Toast.LENGTH_SHORT).show();
+        } else {
+            MessageNetwork.sendMessage(this.ACC, this.recipients, this.subject, this.content).subscribe(send -> {
+                if (send) {
+                    Toast.makeText(getContext(), getString(R.string.succes_sending), Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(MainActivity.KEY_Acc, ACC);
+                    bundle.putString(MainActivity.KEY_FolderName, folderName);
+                    navController.navigate(R.id.messagesFragment, bundle);
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.failure_sending), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void loadMessage(){
@@ -214,19 +211,19 @@ public class WriteMessage extends Fragment {
     }
 
     private void checkAddressee(String line) {
-        if(line.contains(", ")) {
-            line = line.replace(", ", ",");
-        }else if(line.contains(" ")){
-            line = line.replace(" ", ",");
-        }
+        if(line != null) {
+            if (line.contains(", ")) {
+                line = line.replace(", ", ",");
+            } else if (line.contains(" ")) {
+                line = line.replace(" ", ",");
+            }
 
-        try {
-            recipients = InternetAddress.parse(line);
-            fab.setEnabled(true);
-        } catch (AddressException e) {
-            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.comma_separation), Toast.LENGTH_SHORT).show();
-            fab.setEnabled(false);
-            e.printStackTrace();
+            try {
+                recipients = InternetAddress.parse(line);
+            } catch (AddressException e) {
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.comma_separation), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
         }
     }
 }

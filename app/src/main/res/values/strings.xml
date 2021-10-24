@@ -31,6 +31,10 @@
     <string name="failure_sending">Failed sending a message. Try again later!</string>
     <string name="noTitle">No title</string>
     <string name="speechError">Sorry, I did not understand you</string>
+    <string name="onboardingMainButton_title">This is Main Button</string>
+    <string name="onboardingMainButton_description">PRESS IT to send messages and reply to messages \nHOLD IT to make voice commands</string>
+    <string name="onboardingMenuButton_title">Here you can find menu drawer</string>
+    <string name="onboardingMenuButton_description">Use it to navigate between folders in your mailbox</string>
     <string name="Numeral1">One</string>
     <string name="Numeral2">Two</string>
     <string name="Numeral3">Three</string>
@@ -40,11 +44,15 @@
     <string name="Numeral7">Seven</string>
     <string name="Numeral8">Eight</string>
     <string name="Numeral9">Nine</string>
-    <string name="COMM_GoBack">Go back</string>
-    <string name="COMM_NewMessage">Write new message</string>
-    <string name="COMM_Reply">Reply</string>
-    <string name="COMM_ReplyNo">Reply to message</string>
-    <string name="COMM_Open">Open</string>
-    <string name="COMM_OpenNo">Open message</string>
-    <string name="COMM_Send">Send</string>
+    <string name="COMM_GoBack">go back</string>
+    <string name="COMM_NewMessage">write new message</string>
+    <string name="COMM_Reply">reply</string>
+    <string name="COMM_ReplyNo">reply to message</string>
+    <string name="COMM_Open">open</string>
+    <string name="COMM_OpenNo">open message</string>
+    <string name="COMM_Send">send</string>
+    <string name="long_placeholder_text" translatable="false">Long placeholder text long placeholder text</string>
+    <string name="COMM_Menu">menu</string>
+    <string name="COMM_DeleteNo">delete message</string>
+    <string name="COMM_Delete">delete</string>
 </resources>

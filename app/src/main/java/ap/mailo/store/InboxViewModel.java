@@ -18,12 +18,9 @@ public class InboxViewModel extends AndroidViewModel {
     public InboxViewModel(@NotNull Application application, String folderName, LoggedInUser user) {
         super(application);
         inboxRepository = new InboxRepository(application, folderName, user);
-        messages = inboxRepository.getAllMessages();
     }
 
-    public LiveData<List<MessageHeader>> getAll() {
-        return messages;
-    }
+    public LiveData<List<MessageHeader>> getAll() { return inboxRepository.getAllMessages(); }
 
     public MessageHeader getById(int id) { return inboxRepository.getMessageById(id); }
 

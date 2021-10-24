@@ -23,7 +23,7 @@
     <string name="readToDefault">Brak adresata</string>
     <string name="writeTo">Do</string>
     <string name="writeSubject">Temat</string>
-    <string name="writeContent">Tutaj wprowadź treść wiadomości...</string>
+    <string name="writeContent">Tutaj wprowadź treść wiadomości…</string>
     <string name="go_back">Wróć</string>
     <string name="comma_separation">Adresaci powinni być rozdzieleni przecinkiem!</string>
     <string name="empty_recipient">Podano niepoprawne informacje</string>
@@ -31,6 +31,10 @@
     <string name="failure_sending">Nie udalo się wysłać wiadomości. Spróbuj ponownie!</string>
     <string name="noTitle">Brak tytułu</string>
     <string name="speechError">Przepraszam, nie rozumiem</string>
+    <string name="onboardingMainButton_title">To jest Głowny Przycisk</string>
+    <string name="onboardingMainButton_description">NACIŚNIJ GO aby wysyłać wiadomości i odpowiadać na wiadomości \nPRZYTRZYMAJ GO aby wydawać komendy głosowe</string>
+    <string name="onboardingMenuButton_title">Tutaj znajdziesz menu</string>
+    <string name="onboardingMenuButton_description">Użyj go aby nawigować pomiędzy folderami w swojej skrzynce mailowej</string>
     <string name="Numeral1">Jeden</string>
     <string name="Numeral2">Dwa</string>
     <string name="Numeral3">Trzy</string>
@@ -40,12 +44,15 @@
     <string name="Numeral7">Siedem</string>
     <string name="Numeral8">Osiem</string>
     <string name="Numeral9">Dziewięć</string>
-    <string name="COMM_GoBack">Wróć</string>
-    <string name="COMM_NewMessage">Napisz nową wiadomość</string>
-    <string name="COMM_Reply">Odpowiedz</string>
-    <string name="COMM_ReplyNo">Odpowiedz na wiadomość</string>
-    <string name="COMM_Open">Otwórz</string>
-    <string name="COMM_OpenNo">Otwórz wiadomość</string>
+    <string name="COMM_GoBack">wróć</string>
+    <string name="COMM_NewMessage">napisz nową wiadomość</string>
+    <string name="COMM_Reply">odpowiedz</string>
+    <string name="COMM_ReplyNo">odpowiedz na wiadomość</string>
+    <string name="COMM_Open">otwórz</string>
+    <string name="COMM_OpenNo">otwórz wiadomość</string>
     <string name="mailo_logo_desc">Blado zółto-pomarańczowe tło w kształcie zaokrąglonego prostokąta z ciemno-pomarańczową kopertą w pierwszym planie.</string>
-    <string name="COMM_Send">Wyślij</string>
+    <string name="COMM_Send">wyślij</string>
+    <string name="COMM_Menu">menu</string>
+    <string name="COMM_DeleteNo">usuń wiadomość</string>
+    <string name="COMM_Delete">usuń</string>
 </resources>

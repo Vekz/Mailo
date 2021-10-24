@@ -11,6 +11,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -38,6 +39,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import ap.mailo.R;
 import ap.mailo.auth.LoggedInUser;
@@ -282,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
         public void onResults(Bundle bundle) {
             String result = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).toString();
             result = result.substring(1, result.length()-1);
+            result = result.toLowerCase(Locale.ROOT);
             Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
             handleRecognitionResults(result);
         }
@@ -333,7 +336,8 @@ public class MainActivity extends AppCompatActivity {
                 if (index != -1) {
                     var fragment = getForegroundFragment();
                     if(fragment.getClass().getName().equals(MessagesFragment.class.getName())) {
-
+                        var messageListFragment = (MessagesFragment)fragment;
+                        messageListFragment.openMessageAt(index);
                     }
                 }
                 return;
@@ -341,13 +345,22 @@ public class MainActivity extends AppCompatActivity {
         }
         if(result.startsWith(getString(R.string.COMM_Open))) {
             String[] resultSplit = result.split(" ");
-            if (resultSplit.length == 2) {
-                String folderName = resultSplit[1];
-                if(folderNames.contains(folderName)) {
+            if (resultSplit.length >= 2) {
+                String folderName = "";
+                for(int i=1; i< resultSplit.length; i++) {
+                    String space = " ";
+                    if(i == resultSplit.length - 1){
+                        space = "";
+                    }
+                    folderName = String.format("%s%s%s", folderName, resultSplit[i], space);
+                }
+
+                if(folderNames.stream().anyMatch(folderName::equalsIgnoreCase)) {
                     // Open appropriate folder
+                    var name = folderNames.stream().filter(folderName::equalsIgnoreCase).toArray()[0].toString();
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(KEY_Acc, ACC);
-                    bundle.putString(KEY_FolderName, folderName);
+                    bundle.putString(KEY_FolderName, name);
                     navController.navigate(R.id.messagesFragment, bundle);
                     return;
                 }
@@ -362,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                 if (index != -1) {
                     var fragment = getForegroundFragment();
                     if(fragment.getClass().getName().equals(MessagesFragment.class.getName())) {
-
+                        Log.d(TAG, "Not yet implemented ;C");
                     }
                 }
                 return;
@@ -376,6 +389,33 @@ public class MainActivity extends AppCompatActivity {
             {
                 var readFragment = (ReadMessage)fragment;
                 readFragment.reply();
+                return;
+            }
+        }
+        if(result.startsWith(getString(R.string.COMM_DeleteNo))) {
+            String[] resultSplit = result.split(" ");
+            if (resultSplit.length == 3) {
+                String messNumber = resultSplit[2];
+                int index = stringToInt(messNumber);
+                // Delete message with that index
+                if (index != -1) {
+                    var fragment = getForegroundFragment();
+                    if(fragment.getClass().getName().equals(MessagesFragment.class.getName())) {
+                        var messageListFragment = (MessagesFragment)fragment;
+                        messageListFragment.deleteMessageAt(index);
+                    }
+                }
+                return;
+            }
+        }
+        if(result.equalsIgnoreCase(getString(R.string.COMM_Delete)))
+        {
+            // Reply to this message
+            var fragment = getForegroundFragment();
+            if(fragment.getClass().getName().equals(ReadMessage.class.getName()))
+            {
+                var readFragment = (ReadMessage)fragment;
+                readFragment.delete();
                 return;
             }
         }
@@ -400,8 +440,14 @@ public class MainActivity extends AppCompatActivity {
         }
         if(result.equalsIgnoreCase(getString(R.string.COMM_GoBack))) {
             // Move to previous fragment on stack
-            if(!folderName.equalsIgnoreCase(getString(R.string.defaultFolder)))
+            var fragment = getForegroundFragment();
+            if(!(folderName.equalsIgnoreCase(getString(R.string.defaultFolder)) && fragment.getClass().getName().equals(MessagesFragment.class.getName())) )
                 navController.popBackStack();
+            return;
+        }
+        if(result.equalsIgnoreCase(getString(R.string.COMM_Menu))) {
+            // Move to previous fragment on stack
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             return;
         }
 

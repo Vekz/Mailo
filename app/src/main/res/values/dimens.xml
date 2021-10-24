@@ -16,11 +16,10 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="padding_sides">15dp</dimen>
 
-
     <!-- Messages list -->
     <dimen name="list_from">15sp</dimen>
     <dimen name="list_subject">13sp</dimen>
-    <dimen name="item_padding">7dp</dimen>
+    <dimen name="item_padding">2dp</dimen>
     <dimen name="item_spacing">2dp</dimen>
 
     <!-- Read message fragment -->
@@ -33,4 +32,5 @@
 
     <!-- Write message fragment -->
     <dimen name="write_text">17sp</dimen>
+    <dimen name="bottomAppBarMargin">54dp</dimen>
 </resources>

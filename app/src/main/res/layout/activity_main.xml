@@ -23,6 +23,7 @@ android:layout_height="match_parent">
         android:layout_width="match_parent"
         android:paddingBottom="?attr/actionBarSize"
         android:id="@+id/navigationView"
+        app:theme="@style/Theme.Mailo.NavMenu"
         app:headerLayout="@layout/header_navigation_drawer"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:menu="@menu/navigation_drawer"
@@ -36,9 +37,8 @@ android:layout_height="match_parent">
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    app:navigationIcon="@drawable/ic_menu_24dp"/>
+    app:navigationIcon="@drawable/ic_menu_24dp"
+    app:menu="@menu/bottom_app_bar"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/fab"

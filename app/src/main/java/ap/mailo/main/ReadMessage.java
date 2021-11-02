@@ -3,6 +3,9 @@ package ap.mailo.main;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -74,6 +77,8 @@ public class ReadMessage extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
         if (getArguments() != null) {
             ACC = getArguments().getParcelable(MainActivity.KEY_Acc);
             folderName = getArguments().getString(MainActivity.KEY_FolderName);
@@ -88,10 +93,22 @@ public class ReadMessage extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        MenuItem delete = menu.add("delete");
+        delete.setIcon(R.drawable.delete);
+        delete.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        delete.setOnMenuItemClickListener(menuItem -> {
+            delete();
+            return true;
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_read_message, container, false);
 
-        backBtn = (ImageView) view.findViewById(R.id.back);
         subjectView = (TextView) view.findViewById(R.id.readSubject);
         fromView = (TextView) view.findViewById(R.id.readFrom);
         toView = (TextView) view.findViewById(R.id.readTo);
@@ -100,13 +117,6 @@ public class ReadMessage extends Fragment {
         contentView.getSettings().setBuiltInZoomControls(true);
         contentView.getSettings().setSupportZoom(true);
         contentView.getSettings().setDisplayZoomControls(false);
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navController.popBackStack();
-            }
-        });
 
         return view;
     }
@@ -157,7 +167,7 @@ public class ReadMessage extends Fragment {
         String to = body[2];
         String content = "<div id='content'>" + body[3] + "</div>";
 
-        subjectView.setText("\t\t" + subject);
+        subjectView.setText(subject);
         fromView.setText(from);
         toView.setText(to);
         contentView.loadDataWithBaseURL(null, content, "text/html", null, null);

@@ -38,6 +38,8 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:textSize="@dimen/Small"
+        android:minLines="2"
+        android:maxLines="2"
         android:text="@string/long_placeholder_text"/>
 
     <TextView
@@ -48,7 +50,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:textSize="@dimen/Regular"
         android:textColor="@color/black"
-        android:maxLength="25"
+        android:maxLines="1"
         android:text="@string/placeholder_text"/>
 
     </LinearLayout>

@@ -68,4 +68,15 @@
             android:id="@+id/action_writeMessage_to_messagesFragment2"
             app:popUpTo="@+id/messagesFragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="ap.mailo.main.infoFragment"
+        tools:layout="@layout/fragment_info">
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_info"
+        app:destination="@+id/infoFragment"
+        app:popUpTo="@id/messagesFragment"
+        />
 </navigation>

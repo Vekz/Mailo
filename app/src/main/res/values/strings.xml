@@ -18,7 +18,7 @@
     <string name="channel_name">Mailo</string>
     <string name="channel_description">New mail</string>
     <string name="readBodyDefault">There is nothing here to show</string>
-    <string name="readSubjectDefault">\t\t This message has no subject</string>
+    <string name="readSubjectDefault">This message has no subject</string>
     <string name="readFromDefault">Couldn\'t get sender of this message</string>
     <string name="readToDefault">Couldn\'t get addressee of this message</string>
     <string name="writeTo">To</string>
@@ -31,7 +31,7 @@
     <string name="failure_sending">Failed sending a message. Try again later!</string>
     <string name="noTitle">No title</string>
     <string name="speechError">Sorry, I did not understand you</string>
-    <string name="onboardingMainButton_title">This is Main Button</string>
+    <string name="onboardingMainButton_title">This is MAIN BUTTON</string>
     <string name="onboardingMainButton_description">PRESS IT to send messages and reply to messages \nHOLD IT to make voice commands</string>
     <string name="onboardingMenuButton_title">Here you can find menu drawer</string>
     <string name="onboardingMenuButton_description">Use it to navigate between folders in your mailbox</string>
@@ -55,4 +55,23 @@
     <string name="COMM_Menu">menu</string>
     <string name="COMM_DeleteNo">delete message</string>
     <string name="COMM_Delete">delete</string>
+    <string name="content_description_help">Voice commands - help</string>
+    <string name="help">Help</string>
+    <string name="Voice_commands_info">Voice Commands</string>
+    <string name="onboardingHelpButton_title">Here is VOICE COMMANDS help view</string>
+    <string name="onboardingHelpButton_description">You can find there all voice commands listed</string>
+    <string name="pb_logo_desc">Bialystok University of Technology logo</string>
+    <string name="title_activity_settings">General Settings</string>
+    <string name="theme_pref_title">Theme for the application</string>
+    <string name="sync_pref_title">Check for new messages in</string>
+    <string name="pref_summary">Different customizations for Mailo app</string>
+    <string name="pref_cat_title">Settings</string>
+    <string name="a15_minutes">15 minutes</string>
+    <string name="a30_minutes">30 minutes</string>
+    <string name="a1_hour">1 hour</string>
+    <string name="a8_hour">8 hours</string>
+    <string name="a12_hour">12 hours</string>
+    <string name="a24_hour">24 hours</string>
+    <string name="aDefaultTheme">Default</string>
+    <string name="aHCTheme">High contrast</string>
 </resources>

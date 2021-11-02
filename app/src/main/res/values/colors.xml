@@ -9,6 +9,7 @@
     <color name="dark_grey_dark">#201e1f</color>
 
 <!--    Secondary color    -->
+    <color name="orange_superlight">#FFB696</color>
     <color name="orange">#ff773a</color>
     <color name="orange_dark">#ff4000</color>
 

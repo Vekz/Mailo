@@ -13,6 +13,7 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -106,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Bottom App Bar hamburger menu listener
         bottomAppBar.setNavigationOnClickListener(v -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
+        bottomAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.info) {
+                navController.navigate(R.id.action_global_info);
+                return true;
+            }
+            return false;
+        });
 
         // Scrim listener
         scrim.setOnClickListener(view -> {
@@ -159,6 +167,13 @@ public class MainActivity extends AppCompatActivity {
             fab.setOnLongClickListener(speechPressed);
             fab.setOnTouchListener(speechReleased);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.bottom_app_bar, menu);
+        return true;
     }
 
     // Populate bottom drawer
@@ -236,7 +251,6 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_Acc, ACC);
         bundle.putString(KEY_FolderName, folderName);
-        navController.popBackStack(R.id.messagesFragment, true);
         navController.navigate(R.id.messagesFragment, bundle);
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);

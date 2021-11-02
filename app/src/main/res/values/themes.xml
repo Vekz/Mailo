@@ -18,4 +18,8 @@
         <item name="colorControlNormal">@color/black</item>
     </style>
 
+    <style name="Theme.Mailo.NavMenu" parent="Theme.Mailo">
+        <item name="colorPrimary">@color/orange</item>
+    </style>
+
 </resources>

@@ -1,9 +1,19 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
         android:key="@string/pref_syncTime"
-        android:title="Check for new messages in"
+        android:title="@string/sync_pref_title"
         android:summary="%s"
         android:entries="@array/SyncTime"
         android:entryValues="@array/SyncTime_values"
-        android:defaultValue="900"/>
+        android:defaultValue="900"
+        android:persistent="true"/>
+
+    <ListPreference
+        android:key="@string/pref_theme"
+        android:title="@string/theme_pref_title"
+        android:summary="%s"
+        android:entries="@array/theme"
+        android:entryValues="@array/themeValues"
+        android:defaultValue="R.style.Theme_Mailo"
+        android:persistent="true"/>
 </androidx.preference.PreferenceScreen>

@@ -67,4 +67,6 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     //TapTargetView - feature intro
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.3'
+    //Swipe item decorator
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.1'
 }

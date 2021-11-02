@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/bottomAppBarMargin"
+    android:layout_marginBottom="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/messages_swipe_refresh"
     tools:context=".main.MessagesFragment">

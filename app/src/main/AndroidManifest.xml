@@ -11,51 +11,62 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <application
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mailo">
-
+        <activity
+            android:name=".preferences.SettingsActivity"
+            android:exported="true"
+            android:label="@string/title_activity_settings" />
         <!-- Splash screen activity -->
         <activity
             android:name=".main.EntryActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="android.intent.action.SENDTO"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.SENDTO" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="mailto" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <data android:scheme="mailto" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
-        </activity>
-
-        <!-- Mailbox activity -->
-        <activity android:name=".main.MainActivity"
-                  android:exported="true"/>
-
-        <!-- Login activity -->
+        </activity> <!-- Mailbox activity -->
+        <activity
+            android:name=".main.MainActivity"
+            android:exported="true" /> <!-- Login activity -->
         <activity
             android:name=".auth.Login"
-            android:label="@string/title_activity_authenticator"
-            android:exported="true"/>
-
-        <!-- Service for Accounts&Sync settings integration -->
-        <service android:name=".auth.AuthenticatorService"
-                 android:exported="true">
+            android:exported="true"
+            android:label="@string/title_activity_authenticator" /> <!-- Service for Accounts&Sync settings integration -->
+        <service
+            android:name=".auth.AuthenticatorService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -63,9 +74,7 @@
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
-        </service>
-
-        <!-- Synchronization service -->
+        </service> <!-- Synchronization service -->
         <provider
             android:name=".sync.StubProvider"
             android:authorities="@string/ACCOUNT_TYPE"
@@ -78,21 +87,11 @@
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
+
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_adapter" />
         </service>
-
     </application>
-
-    <queries>
-        <intent>
-            <action
-                android:name="android.speech.RecognitionService" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.TTS_SERVICE" />
-        </intent>
-    </queries>
 
 </manifest>

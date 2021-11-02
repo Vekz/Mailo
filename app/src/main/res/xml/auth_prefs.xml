@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="app_category"
+        android:title="@string/pref_cat_title">
+
+        <Preference
+            android:key="general_settings"
+            android:summary="@string/pref_summary"
+            android:title="@string/title_activity_settings">
+            <intent
+                android:targetPackage="ap.mailo"
+                android:targetClass="ap.mailo.preferences.SettingsActivity"/>
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

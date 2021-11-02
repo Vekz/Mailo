@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,9 @@ public class EntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getPreferedStyleAndSetIt();
+
         setContentView(R.layout.splash_screen);
         Log.d(getString(R.string.app_name), TAG + "> Entry Point");
 
@@ -41,8 +45,19 @@ public class EntryActivity extends AppCompatActivity {
             intent = new Intent(this, EntryActivity.class);
         }
 
-        startActivity(intent);
-        finish();
+        (new Handler()).postDelayed(() -> {
+                startActivity(intent);
+                finish();
+        }, 500); // Wait to show user a splash screen with PB logo etc.
+    }
+
+    void getPreferedStyleAndSetIt()
+    {
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String themeResource_str = mSharedPreferences.getString(getString(R.string.pref_theme), "R.style.Theme_Mailo");
+        int resId = getResources().getIdentifier(themeResource_str, "style", this.getPackageName());
+
+        setTheme(resId);
     }
 
     void launchAppOrLogin() {
@@ -51,7 +66,7 @@ public class EntryActivity extends AppCompatActivity {
             mAccountManager.addAccount(getString(R.string.ACCOUNT_TYPE), null, null, null, EntryActivity.this, null, null);
         } else {
             acc = new LoggedInUser(accounts[0], getBaseContext());
-            SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             String syncTime_str = mSharedPreferences.getString(getString(R.string.pref_syncTime), "900");
             int syncTime = Integer.parseInt(syncTime_str);
             ContentResolver.addPeriodicSync(accounts[0], getString(R.string.ACCOUNT_TYPE), Bundle.EMPTY, syncTime);

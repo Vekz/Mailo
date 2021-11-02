@@ -18,7 +18,7 @@
     <string name="channel_name">Mailo</string>
     <string name="channel_description">Nowa wiadomość</string>
     <string name="readBodyDefault">Tutaj nic nie ma</string>
-    <string name="readSubjectDefault">\t\t Brak tematu</string>
+    <string name="readSubjectDefault">Brak tematu</string>
     <string name="readFromDefault">Brak nadawcy</string>
     <string name="readToDefault">Brak adresata</string>
     <string name="writeTo">Do</string>
@@ -31,7 +31,7 @@
     <string name="failure_sending">Nie udalo się wysłać wiadomości. Spróbuj ponownie!</string>
     <string name="noTitle">Brak tytułu</string>
     <string name="speechError">Przepraszam, nie rozumiem</string>
-    <string name="onboardingMainButton_title">To jest Głowny Przycisk</string>
+    <string name="onboardingMainButton_title">To jest GŁÓWNY PRZYCISK</string>
     <string name="onboardingMainButton_description">NACIŚNIJ GO aby wysyłać wiadomości i odpowiadać na wiadomości \nPRZYTRZYMAJ GO aby wydawać komendy głosowe</string>
     <string name="onboardingMenuButton_title">Tutaj znajdziesz menu</string>
     <string name="onboardingMenuButton_description">Użyj go aby nawigować pomiędzy folderami w swojej skrzynce mailowej</string>
@@ -55,4 +55,23 @@
     <string name="COMM_Menu">menu</string>
     <string name="COMM_DeleteNo">usuń wiadomość</string>
     <string name="COMM_Delete">usuń</string>
+    <string name="content_description_help">Komendy głosowe - pomoc</string>
+    <string name="Voice_commands_info">Komendy głosowe</string>
+    <string name="help">Pomoc</string>
+    <string name="onboardingHelpButton_title">Tutaj znajduje się widok pomocy KOMEND GŁOSOWYCH</string>
+    <string name="onboardingHelpButton_description">Możesz tam znaleźć wylistowane wszystkie komendy głosowe</string>
+    <string name="pb_logo_desc">Logo Politechniki Białostockiej</string>
+    <string name="title_activity_settings">Głowne ustawienia</string>
+    <string name="theme_pref_title">Motyw aplikacji</string>
+    <string name="sync_pref_title">Sprawdź nowe wiadomości co</string>
+    <string name="pref_summary">Różne dostosowania aplikacji Mailo</string>
+    <string name="pref_cat_title">Ustawienia</string>
+    <string name="a15_minutes">15 minut</string>
+    <string name="a30_minutes">30 minut</string>
+    <string name="a1_hour">1 godzina</string>
+    <string name="a8_hour">8 godzin</string>
+    <string name="a12_hour">12 godzin</string>
+    <string name="a24_hour">24 godziny</string>
+    <string name="aDefaultTheme">Domyślny</string>
+    <string name="aHCTheme">Wysoki kontrast</string>
 </resources>

@@ -100,12 +100,9 @@ public class WriteMessage extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_write_message, container, false);
 
-        backBtn = (ImageView) view.findViewById(R.id.back);
         writeRecipient = view.findViewById(R.id.writeTo);
         writeSubject = view.findViewById(R.id.writeSubject);
         writeContent = view.findViewById(R.id.writeContent);
-
-        backBtn.setOnClickListener(v -> navController.popBackStack());
 
         return view;
     }

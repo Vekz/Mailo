@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="SyncTime">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>8 hours</item>
-        <item>12 hours</item>
-        <item>24 hours</item>
+        <item>@string/a15_minutes</item>
+        <item>@string/a30_minutes</item>
+        <item>@string/a1_hour</item>
+        <item>@string/a8_hour</item>
+        <item>@string/a12_hour</item>
+        <item>@string/a24_hour</item>
     </string-array>
 
     <string-array name="SyncTime_values">
@@ -16,6 +16,16 @@
         <item>28800</item>
         <item>43200</item>
         <item>86400</item>
+    </string-array>
+
+    <string-array name="theme">
+        <item>@string/aDefaultTheme</item>
+        <item>@string/aHCTheme</item>
+    </string-array>
+
+    <string-array name="themeValues">
+        <item>R.style.Theme_Mailo</item>
+        <item>R.style.Theme_Mailo_HC</item>
     </string-array>
 
 </resources>

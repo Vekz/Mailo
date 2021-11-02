@@ -3,11 +3,15 @@ package ap.mailo.main;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.accounts.Account;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -19,9 +23,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -44,6 +52,7 @@ import ap.mailo.store.InboxViewModel;
 import ap.mailo.store.InboxViewModelFactory;
 import ap.mailo.store.MessageHeader;
 import ap.mailo.util.InternetChecker;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import static jakarta.mail.internet.MimeUtility.decodeText;
 
@@ -275,6 +284,17 @@ public class MessagesFragment extends Fragment {
 
     ItemTouchHelper.SimpleCallback itemDeleteCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
+        public void onChildDraw (@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
+            new RecyclerViewSwipeDecorator.Builder(requireContext(), c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                    .addActionIcon(R.drawable.delete)
+                    .create()
+                    .decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+
+        @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
         }
@@ -356,11 +376,14 @@ public class MessagesFragment extends Fragment {
             TypedValue value = new TypedValue();
             getContext().getTheme().resolveAttribute(R.attr.colorOnPrimary, value, true);
             if(fab != null && bottomAppDrawer != null) {
+                int helpId = bottomAppDrawer.getMenu().findItem(R.id.info).getItemId();
                 new TapTargetSequence(activity)
                         .targets(
                                 TapTarget.forView(fab, getString(R.string.onboardingMainButton_title), getString(R.string.onboardingMainButton_description))
                                 .textColorInt(value.data),
                                 TapTarget.forToolbarNavigationIcon(bottomAppDrawer, getString(R.string.onboardingMenuButton_title), getString(R.string.onboardingMenuButton_description))
+                                .textColorInt(value.data),
+                                TapTarget.forToolbarMenuItem(bottomAppDrawer, helpId, getString(R.string.onboardingHelpButton_title), getString(R.string.onboardingHelpButton_description))
                                 .textColorInt(value.data)
                         ).start();
                 return true;

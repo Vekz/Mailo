@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_horizontal_margin"
     android:layout_marginBottom="?attr/actionBarSize"
     tools:context=".main.ReadMessage">
 
@@ -13,33 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-           android:id="@+id/readTopLine"
+        <TextView
+            android:id="@+id/readSubject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/padding_sides"
             android:paddingVertical="@dimen/read_subject_padding"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
-                android:contentDescription="@string/go_back"
-                android:src="@drawable/ic_back_arrow" />
-
-            <TextView
-                android:id="@+id/readSubject"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="80dp"
-                android:maxHeight="240dp"
-                android:autoSizeTextType="uniform"
-                android:text="@string/readSubjectDefault"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+            android:minHeight="80dp"
+            android:maxHeight="240dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/readSubjectDefault"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/readFrom"
@@ -50,7 +33,7 @@
             tools:layout_editor_absoluteY="78dp"
             android:paddingHorizontal="@dimen/padding_sides"
             android:text = "@string/readFromDefault"
-            app:layout_constraintTop_toBottomOf="@id/readTopLine"
+            app:layout_constraintTop_toBottomOf="@id/readSubject"
             app:layout_constraintBottom_toTopOf="@id/readTo"/>
 
         <TextView
@@ -62,7 +45,7 @@
             tools:layout_editor_absoluteY="78dp"
             android:paddingHorizontal="@dimen/padding_sides"
             android:text = "@string/readToDefault"
-            app:layout_constraintTop_toBottomOf="@id/readSubject"
+            app:layout_constraintTop_toBottomOf="@id/readFrom"
             app:layout_constraintBottom_toTopOf="@id/readBody"/>
 
         <WebView
@@ -76,6 +59,7 @@
             android:paddingHorizontal="@dimen/padding_sides"
             android:text = "@string/readBodyDefault"
             app:layout_constraintTop_toBottomOf="@id/readTo"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="?attr/actionBarSize"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

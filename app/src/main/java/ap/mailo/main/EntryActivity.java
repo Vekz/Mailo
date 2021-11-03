@@ -1,5 +1,7 @@
 package ap.mailo.main;
 
+import static ap.mailo.util.StyleService.setPreferedStyle;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
@@ -25,9 +27,7 @@ public class EntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        getPreferedStyleAndSetIt();
-
+        setPreferedStyle(this);
         setContentView(R.layout.splash_screen);
         Log.d(getString(R.string.app_name), TAG + "> Entry Point");
 
@@ -49,15 +49,6 @@ public class EntryActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
         }, 500); // Wait to show user a splash screen with PB logo etc.
-    }
-
-    void getPreferedStyleAndSetIt()
-    {
-        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String themeResource_str = mSharedPreferences.getString(getString(R.string.pref_theme), "R.style.Theme_Mailo");
-        int resId = getResources().getIdentifier(themeResource_str, "style", this.getPackageName());
-
-        setTheme(resId);
     }
 
     void launchAppOrLogin() {

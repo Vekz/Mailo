@@ -1,10 +1,13 @@
 package ap.mailo.preferences;
 
+import static ap.mailo.util.StyleService.setPreferedStyle;
+
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 

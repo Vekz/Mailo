@@ -44,6 +44,7 @@
             tools:layout_editor_absoluteX="64dp"
             tools:layout_editor_absoluteY="78dp"
             android:paddingHorizontal="@dimen/padding_sides"
+            android:paddingBottom="@dimen/item_padding"
             android:text = "@string/readToDefault"
             app:layout_constraintTop_toBottomOf="@id/readFrom"
             app:layout_constraintBottom_toTopOf="@id/readBody"/>

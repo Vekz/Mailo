@@ -8,12 +8,24 @@
     <color name="dark_grey">#474546</color>
     <color name="dark_grey_dark">#201e1f</color>
 
+<!--    Primary HC      -->
+    <color name="hc_gray">#424242</color>
+    <color name="hc_gray_darker">#1b1b1b</color>
+
+<!--    Primary HC dark     -->
+    <color name="hc_gray_light">#bdbdbd</color>
+
 <!--    Secondary color    -->
     <color name="orange_superlight">#FFB696</color>
     <color name="orange">#ff773a</color>
     <color name="orange_dark">#ff4000</color>
 
+<!--    Secondary color HC  -->
+    <color name="hc_orange">#ff9e40</color>
+    <color name="hc_orange_dark">#ff6d00</color>
+
 <!--    On colors   -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
 </resources>

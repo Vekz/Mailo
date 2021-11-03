@@ -24,8 +24,8 @@
     </string-array>
 
     <string-array name="themeValues">
-        <item>R.style.Theme_Mailo</item>
-        <item>R.style.Theme_Mailo_HC</item>
+        <item>Theme.Mailo</item>
+        <item>Theme.Mailo.HC</item>
     </string-array>
 
 </resources>

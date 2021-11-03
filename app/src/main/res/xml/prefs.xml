@@ -14,6 +14,6 @@
         android:summary="%s"
         android:entries="@array/theme"
         android:entryValues="@array/themeValues"
-        android:defaultValue="R.style.Theme_Mailo"
+        android:defaultValue="Theme.Mailo"
         android:persistent="true"/>
 </androidx.preference.PreferenceScreen>

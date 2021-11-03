@@ -2,6 +2,8 @@ package ap.mailo.main;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 
+import static ap.mailo.util.StyleService.setPreferedStyle;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setPreferedStyle(this);
         setContentView(R.layout.activity_main);
 
         // Get attributes passed from EntryActivity

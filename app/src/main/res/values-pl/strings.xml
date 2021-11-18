@@ -6,7 +6,7 @@
     <string name="action_sign_in_short">Zaloguj</string>
     <string name="prompt_email">Adres email</string>
     <string name="action_sign_in">Zaloguj</string>
-    <string name="welcome">Witaj</string>
+    <string name="welcome">Witaj </string>
     <string name="login_failed">Złe dane</string>
     <string name="title_activity_authenticator">Login</string>
     <string name="main_button_description">Kliknij aby utworzyć wiadomość lub przytrzymaj aby użyć komend głosowych</string>
@@ -74,4 +74,5 @@
     <string name="a24_hour">24 godziny</string>
     <string name="aDefaultTheme">Domyślny</string>
     <string name="aHCTheme">Wysoki kontrast</string>
+    <string name="COMM_Help">pomoc</string>
 </resources>

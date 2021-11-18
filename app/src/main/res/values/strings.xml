@@ -74,4 +74,5 @@
     <string name="a24_hour">24 hours</string>
     <string name="aDefaultTheme">Default</string>
     <string name="aHCTheme">High contrast</string>
+    <string name="COMM_Help">help</string>
 </resources>

@@ -71,6 +71,8 @@ public class MainActivityTests extends BaseUITest
 
     @Test
     public void openMenuAndChangeMailFolder() throws InterruptedException {
+        Thread.sleep(10000);
+
         changeMessageFolderIntoABC();
 
         Thread.sleep(10000);
@@ -80,6 +82,8 @@ public class MainActivityTests extends BaseUITest
 
     @Test
     public void composeCorrectMailAndSend() throws InterruptedException {
+        Thread.sleep(10000);
+
         onView(withId(R.id.fab)).perform(click());
 
         Thread.sleep(5000);
@@ -100,6 +104,8 @@ public class MainActivityTests extends BaseUITest
 
     @Test
     public void composeIncorrectMail() throws InterruptedException {
+        Thread.sleep(10000);
+
         onView(withId(R.id.fab)).perform(click());
 
         Thread.sleep(5000);
@@ -110,17 +116,17 @@ public class MainActivityTests extends BaseUITest
 
         closeSoftKeyboard();
 
-        onView(withId(R.id.fab)).check(matches(isNotEnabled()));
-
         onView(withId(R.id.fab)).perform(click());
 
         Thread.sleep(5000);
 
-        onView(withId(R.id.FolderTitle)).check(doesNotExist());
+        //In future toast check should check it's content
     }
 
     @Test
     public void checkIfMessageIsCorrectlyDisplayed() throws InterruptedException {
+        Thread.sleep(10000);
+
         changeMessageFolderIntoABC();
 
         Thread.sleep(10000);
@@ -140,6 +146,8 @@ public class MainActivityTests extends BaseUITest
 
     @Test
     public void checkIfReplyInfoIsCopiedAndSendCorrectly() throws InterruptedException {
+        Thread.sleep(10000);
+
         changeMessageFolderIntoABC();
 
         Thread.sleep(5000);
@@ -175,6 +183,8 @@ public class MainActivityTests extends BaseUITest
     }
 
     private void changeMessageFolderIntoABC() throws InterruptedException {
+        Thread.sleep(10000);
+
         onView(allOf(isAssignableFrom(ImageButton.class),
                 withParent(isAssignableFrom(Toolbar.class))))
                 .perform(click());

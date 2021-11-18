@@ -182,7 +182,6 @@ public class MessagesFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
 
         ifMailtoThenRedirectToWriteFragment();
-        ifFirstRunThenShowTutorial();
     }
 
     private class MessageHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -352,44 +351,6 @@ public class MessagesFragment extends Fragment {
             MessageHolder message = ((MessageHolder) recyclerView.findViewHolderForLayoutPosition(viewHolderPosition));
             if(message != null) removeMessage(message.getAdapterPosition());
         }
-    }
-
-    private void ifFirstRunThenShowTutorial() {
-        Boolean isFirstRun = getContext().getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                .getBoolean("isFirstRun", true);
-
-        if(isFirstRun)
-        {
-            if(showFeatureOnboarding())            {
-                getContext().getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                        .putBoolean("isFirstRun", false).commit();
-            }
-        }
-    }
-
-    private boolean showFeatureOnboarding() {
-        FragmentActivity activity = this.getActivity();
-        if(activity != null) {
-            View fab = activity.findViewById(R.id.fab);
-            Toolbar bottomAppDrawer = activity.findViewById(R.id.bottomAppBar);
-            // Get colorOnPrimary from day/night material theme
-            TypedValue value = new TypedValue();
-            getContext().getTheme().resolveAttribute(R.attr.colorOnPrimary, value, true);
-            if(fab != null && bottomAppDrawer != null) {
-                int helpId = bottomAppDrawer.getMenu().findItem(R.id.info).getItemId();
-                new TapTargetSequence(activity)
-                        .targets(
-                                TapTarget.forView(fab, getString(R.string.onboardingMainButton_title), getString(R.string.onboardingMainButton_description))
-                                .textColorInt(value.data),
-                                TapTarget.forToolbarNavigationIcon(bottomAppDrawer, getString(R.string.onboardingMenuButton_title), getString(R.string.onboardingMenuButton_description))
-                                .textColorInt(value.data),
-                                TapTarget.forToolbarMenuItem(bottomAppDrawer, helpId, getString(R.string.onboardingHelpButton_title), getString(R.string.onboardingHelpButton_description))
-                                .textColorInt(value.data)
-                        ).start();
-                return true;
-            }
-        }
-        return false;
     }
 
     private void ifMailtoThenRedirectToWriteFragment() {
